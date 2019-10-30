@@ -5,7 +5,7 @@ namespace App\EventListener;
 
 
 use App\Entity\Token;
-use App\Inc\JWT;
+use ReallySimpleJWT\Token as Tokenizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,8 @@ class TokenAuthenticationListener extends AbstractController
          */
         $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
 
-        $tokenExpireDate = JWT::decode($t->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'))->exp;
+//        $tokenExpireDate = JWT::decode($t->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'))->exp;
+        $tokenExpireDate = Tokenizer::getPayload($t->getValue(), $this->getParameter('TOKEN_SECRET'))['exp'];
         if ($expireDate !== $tokenExpireDate) {
             throw new Exception('Invalid or modified token...');
         }
@@ -33,7 +34,9 @@ class TokenAuthenticationListener extends AbstractController
         //CHECK IF TOKEN EXIST IN DB
         if (($token = $existingTokens->findOneBy(['value' => $token]))) {
             $this->isTokenValid($token);
-            return JWT::decode($token->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'));
+//            return JWT::decode($token->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'));
+            $jwt = new \ReallySimpleJWT\Jwt($token->getValue(), $this->getParameter('TOKEN_SECRET'));
+            return $jwt->getToken();
         } else {
             throw new Exception('Unrecognized token...');
         }

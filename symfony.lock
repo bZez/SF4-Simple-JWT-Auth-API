@@ -99,6 +99,9 @@
     "psr/log": {
         "version": "1.1.1"
     },
+    "rbdwllr/reallysimplejwt": {
+        "version": "2.1.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af8c03ede08b70c69b6f47cee61079b4",
+    "content-hash": "cd7e8ac892add9b788a6a088e4f67618",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1572,6 +1572,60 @@
                 "psr-3"
             ],
             "time": "2019-10-25T08:06:51+00:00"
+        },
+        {
+            "name": "rbdwllr/reallysimplejwt",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RobDWaller/ReallySimpleJWT.git",
+                "reference": "145c55fbd70ab2295059228e098e86bf4070eabc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RobDWaller/ReallySimpleJWT/zipball/145c55fbd70ab2295059228e098e86bf4070eabc",
+                "reference": "145c55fbd70ab2295059228e098e86bf4070eabc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.12.2",
+                "phploc/phploc": "^4.0",
+                "phpmd/phpmd": "2.6.*",
+                "phpstan/phpstan": "^0.10",
+                "phpunit/phpunit": "^7.0",
+                "sebastian/phpcpd": "^4.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReallySimpleJWT\\": "src",
+                    "Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Waller",
+                    "email": "rdwaller1984@gmail.com"
+                }
+            ],
+            "description": "A really simple library to generate user authentication JSON Web Tokens.",
+            "keywords": [
+                "Authentication",
+                "json",
+                "json web tokens",
+                "jwt",
+                "php",
+                "tokens"
+            ],
+            "time": "2019-08-13T15:31:13+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
