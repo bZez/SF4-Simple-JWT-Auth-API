@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Token;
+use App\Entity\AuthToken;
 use App\Entity\User;
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Encode;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AuthController extends AbstractController
 {
     /**
-     * @param Token $t
+     * @param AuthToken $t
      */
     public function isTokenValid($t)
     {
@@ -31,40 +31,39 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @param $user
-     * @return string|null
+     * @param User $user
+     * @return AuthToken|string $token
      * @throws \ReallySimpleJWT\Exception\ValidateException
      */
     public function generateAuthToken($user)
     {
-        $tokenBuilder = new Build('JWT', new Validate(), new Encode());
-        /**
-         * @var User $user
-         * @var Token $token
-         */
-        //DATES
-        $tomorow = new \DateTime('now +1year');
-        $exp = strtotime($tomorow->format('Y-m-d'));
-
-        //DOCTRINE
-        $em = $this->getDoctrine()->getManager();
-
-        //SET TOKEN PARAMS
-        $userInfos = [
-            "login" => $user->getEmail(),
-            "roles" => $user->getRoles(),
-            "privileges" => $user->getPrivileges()
-        ];
-        //STORE TOKEN
-        if ($user->getToken()) {
-            $token = $user->getToken();
+        //CHECK OR STORE TOKEN
+        if ($user->getAuthToken()) {
+            $token = $user->getAuthToken();
             return $token->getValue();
         } else {
-            $token = new Token();
+            $tokenBuilder = new Build('JWT', new Validate(), new Encode());
+            $token = new AuthToken();
+            /**
+             * @var User $user
+             */
+            //DATES
+            $tomorow = new \DateTime('now +1year');
+            $exp = strtotime($tomorow->format('Y-m-d'));
+
+            //DOCTRINE
+            $em = $this->getDoctrine()->getManager();
+
+            //SET TOKEN PARAMS
+            $userInfos = [
+                "login" => $user->getEmail(),
+                "roles" => $user->getRoles(),
+                "privileges" => $user->getPrivileges()
+            ];
             $t = $tokenBuilder->setContentType('JWT')
                 ->setHeaderClaim('Token','FirstAuthAPI')
                 ->setSecret($this->getParameter('TOKEN_SECRET'))
-                ->setIssuer('localhost')
+                ->setIssuer('API Authenticator')
                 ->setSubject('api-access-token')
                 ->setAudience('https://yourapi.com')
                 ->setExpiration($exp)
@@ -76,7 +75,7 @@ class AuthController extends AbstractController
         $token->setUser($user);
         $token->setValue($t->getToken());
         $token->setExpiration($tomorow);
-        $user->setToken($token);
+        $user->setAuthToken($token);
         $em->persist($token);
         $em->persist($user);
         $em->flush();
@@ -85,26 +84,24 @@ class AuthController extends AbstractController
 
     /**
      * @Route("/auth/login", name="api_get_auth",methods={"GET"})
-     * @param Request $request
-     * @param UserRepository $userRepository
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @throws \ReallySimpleJWT\Exception\ValidateException
+     * @throws \Exception
      */
-    public function authenticate($request,$userRepository,$passwordEncoder)
+    public function authenticate(UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
     {
+        $request = Request::createFromGlobals();
         if (($login = $request->getUser()) && ($pwd = $request->getPassword())) {
             $user = $userRepository->findOneBy(['email' => $login]);
             if ($user) {
                 if ($passwordEncoder->isPasswordValid($user, $pwd)) {
-                    if (($userToken = $user->getToken()) != null) {
+                    if (($userToken = $user->getAuthToken()) != null) {
                         try {
                             if ($this->isTokenValid($userToken)) {
                                 return $this->json(['token' => $userToken->getValue()]);
                             } else {
                                 return $this->json(['token' => $this->generateAuthToken($user)]);
                             }
-                        } catch (\Exception $e) {
+                        } catch (Exception $e) {
                             return $this->json(['Error' => $e->getMessage()]);
                         }
                     } else {

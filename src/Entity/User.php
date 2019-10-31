@@ -41,9 +41,9 @@ class User implements UserInterface
     private $privileges = [];
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Token")
+     * @ORM\OneToOne(targetEntity="App\Entity\AuthToken")
      */
-    private $token;
+    private $authToken;
 
     public function getId(): ?int
     {
@@ -136,15 +136,15 @@ class User implements UserInterface
     }
 
     /**
-     * @return Token
+     * @return AuthToken
      */
-    public function getToken()
+    public function getAuthToken()
     {
-        return $this->token;
+        return $this->authToken;
     }
-    public function setToken($token): self
+    public function setAuthToken($authToken): self
     {
-        $this->token = $token;
+        $this->authToken = $authToken;
 
         return $this;
     }
