@@ -5,27 +5,21 @@ namespace App\EventListener;
 
 
 use App\Entity\AuthToken;
-use ReallySimpleJWT\Jwt;
+
 use ReallySimpleJWT\Token as Tokenizer;
-use ReallySimpleJWT\Token;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class TokenAuthenticationListener extends AbstractController
 {
-    /**
-     * @param AuthToken|object $t
-     */
-    public function isTokenValid($t)
-    {
-        $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
+    private $request;
+    private $authToken;
 
-//        $tokenExpireDate = JWT::decode($t->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'))->exp;
-        $tokenExpireDate = Tokenizer::getPayload($t->getValue(), $this->getParameter('TOKEN_SECRET'))['exp'];
-        if ($expireDate !== $tokenExpireDate) {
-            throw new Exception('Invalid or modified token...');
-        }
+    public function __construct()
+    {
+        $this->request = Request::createFromGlobals();
+        $this->authToken = $this->request->headers->get('Authorization');
     }
 
     /**
@@ -33,23 +27,35 @@ class TokenAuthenticationListener extends AbstractController
      */
     public function checkToken()
     {
-        $request = Request::createFromGlobals();
+
         $existingTokens = $this->getDoctrine()->getRepository(AuthToken::class);
-        $token = $request->headers->get('Authorization');
-        //CHECK IF TOKEN EXIST IN DB
-        if (($token = $existingTokens->findOneBy(['value' => $token]))) {
-            $this->isTokenValid($token);
-            $jwt = new Jwt($token->getValue(), $this->getParameter('TOKEN_SECRET'));
-            return $jwt->getToken();
-        } else {
+        if (!($token = $this->authToken))
+            throw new Exception('Token is missing...');
+        if (!($token = $existingTokens->findOneBy(['value' => $token])))
             throw new Exception('Unrecognized token...');
+        else
+            $token->isValid();
+
+    }
+
+    /**
+     * @Infos Check if the requested methods is enabled in authToken.
+     */
+    public function checkPrivileges()
+    {
+        $request = $this->request;
+        $privileges = Tokenizer::getPayload($this->authToken, $this->getParameter('TOKEN_SECRET'))['user']['privileges'];
+        if (!in_array($request->getMethod(), $privileges)) {
+            throw new Exception('Forbidden access...');
         }
     }
 
     public function onKernelRequest()
     {
-        $request = Request::createFromGlobals();
-        if ($request->server->get('REDIRECT_URL') !== '/auth/login')
+
+        if ($this->request->server->get('REDIRECT_URL') !== '/auth/login') {
             $this->checkToken();
+            $this->checkPrivileges();
+        }
     }
 }

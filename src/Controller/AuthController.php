@@ -6,11 +6,13 @@ use App\Entity\AuthToken;
 use App\Entity\User;
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Encode;
+use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token as Tokenizer;
 use App\Repository\UserRepository;
 use ReallySimpleJWT\Validate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -33,7 +35,7 @@ class AuthController extends AbstractController
     /**
      * @param User $user
      * @return AuthToken|string $token
-     * @throws \ReallySimpleJWT\Exception\ValidateException
+     * @throws ValidateException
      */
     public function generateAuthToken($user)
     {
@@ -84,7 +86,7 @@ class AuthController extends AbstractController
 
     /**
      * @Route("/auth/login", name="api_get_auth",methods={"GET"})
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      * @throws \Exception
      */
     public function authenticate(UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
@@ -120,7 +122,7 @@ class AuthController extends AbstractController
 
     /**
      * @Route("/auth/user", name="api_get_user",methods={"GET"})
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function user()
     {

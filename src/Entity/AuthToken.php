@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ReallySimpleJWT\Token as Tokenizer;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AuthTokenRepository")
@@ -109,5 +111,13 @@ class AuthToken
         $this->ip = $ip;
 
         return $this;
+    }
+
+    public function isValid(){
+        $expireDate = strtotime(($this->getExpiration())->format('Y-m-d'));
+        $tokenExpireDate = Tokenizer::getPayload($this->getValue(), '53f1d8af82283491b2fe98310ccf9a75nE$!')['exp'];
+        if ($expireDate !== $tokenExpireDate) {
+            throw new Exception('Invalid or modified token...');
+        }
     }
 }
