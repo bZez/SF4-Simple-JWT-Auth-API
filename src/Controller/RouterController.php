@@ -9,9 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RouterController extends AbstractController
 {
-    /**
-     * @Route("/{segment}s/{action}", name="api_get_action")
-     */
 
     public function forwardTo($segment,$action)
     {
@@ -21,7 +18,9 @@ class RouterController extends AbstractController
             return $this->forward('App\Controller\\' . ucfirst($segment) . 'Controller::' . $action);
     }
 
-
+    /**
+     * @Route("/{segment}s/{action}", name="api_action")
+     */
     public function go()
     {
         $request = Request::createFromGlobals();

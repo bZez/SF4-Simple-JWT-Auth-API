@@ -18,21 +18,24 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AuthController extends AbstractController
 {
+    /**
+     * @param Token $t
+     */
     public function isTokenValid($t)
     {
-        /**
-         * @var Token $t
-         */
         $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
-
-//        $tokenExpireDate = JWT::decode($t->getValue(), $this->getParameter('TOKEN_SECRET'), array('HS256'))->exp;
         $tokenExpireDate = Tokenizer::getPayload($t->getValue(),$this->getParameter('TOKEN_SECRET'))['exp'];
         if ($expireDate !== $tokenExpireDate) {
             throw new Exception('Invalid or modified token...');
         }
     }
 
-    public function generateToken($user)
+    /**
+     * @param $user
+     * @return string|null
+     * @throws \ReallySimpleJWT\Exception\ValidateException
+     */
+    public function generateAuthToken($user)
     {
         $tokenBuilder = new Build('JWT', new Validate(), new Encode());
         /**
@@ -45,28 +48,13 @@ class AuthController extends AbstractController
 
         //DOCTRINE
         $em = $this->getDoctrine()->getManager();
-        //SET TOKEN PARAMS
-        /**
-         * Not before...
-         */
-        // $nbf = strtotime('2021-01-01 00:00:01');
 
-        /**
-         * Expire at....
-         */
-        $payloadArray = array();
-        $payloadArray['user'] = [
+        //SET TOKEN PARAMS
+        $userInfos = [
             "login" => $user->getEmail(),
             "roles" => $user->getRoles(),
             "privileges" => $user->getPrivileges()
         ];
-        if (isset($nbf)) {
-            $payloadArray['nbf'] = $nbf;
-        }
-        if (isset($exp)) {
-            $payloadArray['exp'] = $exp;
-        }
-
         //STORE TOKEN
         if ($user->getToken()) {
             $token = $user->getToken();
@@ -74,36 +62,36 @@ class AuthController extends AbstractController
         } else {
             $token = new Token();
             $t = $tokenBuilder->setContentType('JWT')
-                ->setHeaderClaim('Token','MGELAPI')
+                ->setHeaderClaim('Token','FirstAuthAPI')
                 ->setSecret($this->getParameter('TOKEN_SECRET'))
                 ->setIssuer('localhost')
                 ->setSubject('api-access-token')
-                ->setAudience('https://api.mgel.fr')
+                ->setAudience('https://yourapi.com')
                 ->setExpiration($exp)
                 ->setIssuedAt(time())
                 ->setJwtId(md5(uniqid('TOKEN')))
-                ->setPayloadClaim('user',$payloadArray['user'])
+                ->setPayloadClaim('user',$userInfos)
                 ->build();
         }
         $token->setUser($user);
-//        $token->setValue(JWT::encode($payloadArray, $this->getParameter('TOKEN_SECRET')));
-        $token->setValue($t->getToken());//Tokenizer::customPayload($payloadArray,$this->getParameter('TOKEN_SECRET')));
+        $token->setValue($t->getToken());
         $token->setExpiration($tomorow);
         $user->setToken($token);
         $em->persist($token);
         $em->persist($user);
         $em->flush();
-
-
-
-
         return $token->getValue();
     }
 
     /**
      * @Route("/auth/login", name="api_get_auth",methods={"GET"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \ReallySimpleJWT\Exception\ValidateException
      */
-    public function authenticate(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder)
+    public function authenticate($request,$userRepository,$passwordEncoder)
     {
         if (($login = $request->getUser()) && ($pwd = $request->getPassword())) {
             $user = $userRepository->findOneBy(['email' => $login]);
@@ -114,13 +102,13 @@ class AuthController extends AbstractController
                             if ($this->isTokenValid($userToken)) {
                                 return $this->json(['token' => $userToken->getValue()]);
                             } else {
-                                return $this->json(['token' => $this->generateToken($user)]);
+                                return $this->json(['token' => $this->generateAuthToken($user)]);
                             }
                         } catch (\Exception $e) {
                             return $this->json(['Error' => $e->getMessage()]);
                         }
                     } else {
-                        return $this->json(['token' => $this->generateToken($user)]);
+                        return $this->json(['token' => $this->generateAuthToken($user)]);
                     }
                 } else {
                     return $this->json(['Error' => "Invalid credentials...."], 500);
@@ -134,11 +122,11 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/auth/user", name="api_get_user")
+     * @Route("/auth/user", name="api_get_user",methods={"GET"})
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function user()
     {
-//        $token =  JWT::decode(Request::createFromGlobals()->headers->get('Authorization'), $this->getParameter('TOKEN_SECRET'), array('HS256'));
         $token = Tokenizer::getPayload(Request::createFromGlobals()->headers->get('Authorization'),$this->getParameter('TOKEN_SECRET'));
         return $this->json([
             "User" => $token['user']['login'],
