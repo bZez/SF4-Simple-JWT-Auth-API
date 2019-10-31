@@ -21,11 +21,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AuthController extends AbstractController
 {
+    private $request;
     private  $secret;
 
     public function __construct(ParameterBagInterface $params)
     {
         $this->secret = $params->get('TOKEN_SECRET');
+        $this->request =  Request::createFromGlobals();
     }
 
     /**
@@ -55,9 +57,6 @@ class AuthController extends AbstractController
         } else {
             $tokenBuilder = new Build('JWT', new Validate(), new Encode());
             $token = new AuthToken();
-            /**
-             * @var User $user
-             */
             //DATES
             $tomorow = new \DateTime('now +1year');
             $exp = strtotime($tomorow->format('Y-m-d'));
@@ -100,7 +99,7 @@ class AuthController extends AbstractController
      */
     public function authenticate(UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
     {
-        $request = Request::createFromGlobals();
+        $request = $this->request;
         if (($login = $request->getUser()) && ($pwd = $request->getPassword())) {
             $user = $userRepository->findOneBy(['email' => $login]);
             if ($user) {
@@ -108,9 +107,9 @@ class AuthController extends AbstractController
                     if (($userToken = $user->getAuthToken()) != null) {
                         try {
                             if ($this->isTokenValid($userToken)) {
-                                return $this->json(['token' => $userToken->getValue()]);
+                                return $this->json(['authToken' => $userToken->getValue()]);
                             } else {
-                                return $this->json(['token' => $this->generateAuthToken($user)]);
+                                return $this->json(['authToken' => $this->generateAuthToken($user)]);
                             }
                         } catch (Exception $e) {
                             return $this->json(['Error' => $e->getMessage()]);
@@ -135,7 +134,7 @@ class AuthController extends AbstractController
      */
     public function user()
     {
-        $token = Tokenizer::getPayload(Request::createFromGlobals()->headers->get('Authorization'),$this->secret);
+        $token = Tokenizer::getPayload($this->request->headers->get('Authorization'),$this->secret);
         return $this->json([
             "User" => $token['user']['login'],
             "Rights" => $token['user']['privileges'],

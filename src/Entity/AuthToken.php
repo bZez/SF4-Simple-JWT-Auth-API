@@ -118,8 +118,8 @@ class AuthToken
     {
         $expireDate = strtotime(($this->getExpiration())->format('Y-m-d'));
         $tokenExpireDate = Tokenizer::getPayload($this->getValue(), $secret)['exp'];
-        if ($expireDate !== $tokenExpireDate) {
+        if ($expireDate !== $tokenExpireDate)
             throw new Exception('Invalid or modified token...');
-        }
+
     }
 }
