@@ -43,6 +43,7 @@ class AuthToken
      */
     private $ip;
 
+
     public function __construct()
     {
         $this->creation = new \DateTime();
@@ -113,9 +114,10 @@ class AuthToken
         return $this;
     }
 
-    public function isValid(){
+    public function isValid($secret)
+    {
         $expireDate = strtotime(($this->getExpiration())->format('Y-m-d'));
-        $tokenExpireDate = Tokenizer::getPayload($this->getValue(), '53f1d8af82283491b2fe98310ccf9a75nE$!')['exp'];
+        $tokenExpireDate = Tokenizer::getPayload($this->getValue(), $secret)['exp'];
         if ($expireDate !== $tokenExpireDate) {
             throw new Exception('Invalid or modified token...');
         }

@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use ReallySimpleJWT\Validate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +21,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AuthController extends AbstractController
 {
+    private  $secret;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->secret = $params->get('TOKEN_SECRET');
+    }
+
     /**
      * @param AuthToken $t
+     * @throws Exception
      */
     public function isTokenValid($t)
     {
         $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
-        $tokenExpireDate = Tokenizer::getPayload($t->getValue(),$this->getParameter('TOKEN_SECRET'))['exp'];
+        $tokenExpireDate = Tokenizer::getPayload($t->getValue(),$this->secret)['exp'];
         if ($expireDate !== $tokenExpireDate) {
             throw new Exception('Invalid or modified token...');
         }
@@ -64,7 +73,7 @@ class AuthController extends AbstractController
             ];
             $t = $tokenBuilder->setContentType('JWT')
                 ->setHeaderClaim('Token','FirstAuthAPI')
-                ->setSecret($this->getParameter('TOKEN_SECRET'))
+                ->setSecret($this->secret)
                 ->setIssuer('API Authenticator')
                 ->setSubject('api-access-token')
                 ->setAudience('https://yourapi.com')
@@ -126,7 +135,7 @@ class AuthController extends AbstractController
      */
     public function user()
     {
-        $token = Tokenizer::getPayload(Request::createFromGlobals()->headers->get('Authorization'),$this->getParameter('TOKEN_SECRET'));
+        $token = Tokenizer::getPayload(Request::createFromGlobals()->headers->get('Authorization'),$this->secret);
         return $this->json([
             "User" => $token['user']['login'],
             "Rights" => $token['user']['privileges'],
