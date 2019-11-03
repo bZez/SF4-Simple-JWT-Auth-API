@@ -39,7 +39,7 @@ class AuthController extends AbstractController
         $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
         $tokenExpireDate = Tokenizer::getPayload($t->getValue(),$this->secret)['exp'];
         if ($expireDate !== $tokenExpireDate) {
-            throw new Exception('Invalid or modified token...');
+            throw new Exception('Invalid or modified token...',000001);
         }
     }
 
@@ -63,6 +63,7 @@ class AuthController extends AbstractController
 
             //DOCTRINE
             $em = $this->getDoctrine()->getManager();
+
 
             //SET TOKEN PARAMS
             $userInfos = [
