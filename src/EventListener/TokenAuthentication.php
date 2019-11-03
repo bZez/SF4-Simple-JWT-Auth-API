@@ -68,14 +68,16 @@ class TokenAuthentication extends AbstractController
                 /**
                  * @Check Action
                  */
+                if(is_numeric($action))
+                    $action = "show";
                 if (!in_array($action, $privileges[$method][$segment])) {
-                    throw new Exception("You can't " . $action . " " . $segment, 000006);
+                    throw new Exception("You can't " . $action . " " . $segment, 000007);
                 }
             } else {
-                throw new Exception("You can't access '" . $segment, 000005);
+                throw new Exception("You can't access '" . $segment, 000006);
             }
         } else {
-            throw new Exception('Forbidden access...', 000004);
+            throw new Exception('Forbidden access...', 000005);
         }
     }
 
