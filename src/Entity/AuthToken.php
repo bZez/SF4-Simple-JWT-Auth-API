@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use DateTimeInterface;
+use ReallySimpleJWT\Build;
+use ReallySimpleJWT\Encode;
+use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token as Tokenizer;
+use ReallySimpleJWT\Validate;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -46,15 +49,39 @@ class AuthToken
     private $ip;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AccessToken", mappedBy="authToken", orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\AccessToken", mappedBy="authToken")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $accessTokens;
+    private $accessToken;
 
 
-    public function __construct()
+    public function __construct($user)
     {
-        $this->creation = new \DateTime();
-        $this->accessTokens = new ArrayCollection();
+        $tokenBuilder = new Build('JWT', new Validate(), new Encode());
+        $this->creation = new DateTime();
+        $this->expiration = $this->creation->modify("+1year");
+        $exp = strtotime($this->expiration->format('Y-m-d'));
+        $userInfos = [
+            "login" => $user->getEmail(),
+            "roles" => $user->getRoles()
+        ];
+        try {
+            $t = $tokenBuilder->setContentType('JWT')
+                ->setHeaderClaim('Token', 'FirstAuthAPI')
+                ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
+                ->setIssuer('API Authenticator')
+                ->setSubject('api-auth-token')
+                ->setAudience('https://yourapi.com')
+                ->setExpiration($exp)
+                ->setIssuedAt(time())
+                ->setJwtId(md5(uniqid('TOKEN')))
+                ->setPayloadClaim('user', $userInfos)
+                ->build();
+        } catch (ValidateException $e) {
+            die("Build error...");
+        }
+        $this->value = $t->getToken();
+        $this->user = $user;
     }
 
     public function getId(): ?int
@@ -86,24 +113,24 @@ class AuthToken
         return $this;
     }
 
-    public function getCreation(): ?\DateTimeInterface
+    public function getCreation(): ?DateTimeInterface
     {
         return $this->creation;
     }
 
-    public function setCreation(\DateTimeInterface $creation): self
+    public function setCreation(DateTimeInterface $creation): self
     {
         $this->creation = $creation;
 
         return $this;
     }
 
-    public function getExpiration(): ?\DateTimeInterface
+    public function getExpiration(): ?DateTimeInterface
     {
         return $this->expiration;
     }
 
-    public function setExpiration(\DateTimeInterface $expiration): self
+    public function setExpiration(DateTimeInterface $expiration): self
     {
         $this->expiration = $expiration;
 
@@ -122,43 +149,35 @@ class AuthToken
         return $this;
     }
 
+    /**
+     * @param $secret
+     * @return bool
+     */
     public function isValid($secret)
     {
         $expireDate = strtotime(($this->getExpiration())->format('Y-m-d'));
         $tokenExpireDate = Tokenizer::getPayload($this->getValue(), $secret)['exp'];
         if ($expireDate !== $tokenExpireDate)
-            throw new Exception('Invalid or modified token...',000004);
+            throw new Exception('Invalid or modified token...', 000004);
+        return true;
 
     }
 
     /**
-     * @return Collection|AccessToken[]
+     * @return mixed
      */
-    public function getAccessTokens(): Collection
+    public function getAccessToken()
     {
-        return $this->accessTokens;
+        return $this->accessToken;
     }
 
-    public function addAccessToken(AccessToken $accessToken): self
+    /**
+     * @param mixed $accessToken
+     */
+    public function setAccessToken(?AccessToken $accessToken)
     {
-        if (!$this->accessTokens->contains($accessToken)) {
-            $this->accessTokens[] = $accessToken;
-            $accessToken->setAuthToken($this);
-        }
-
-        return $this;
+        $this->accessToken = $accessToken;
     }
 
-    public function removeAccessToken(AccessToken $accessToken): self
-    {
-        if ($this->accessTokens->contains($accessToken)) {
-            $this->accessTokens->removeElement($accessToken);
-            // set the owning side to null (unless already changed)
-            if ($accessToken->getAuthToken() === $this) {
-                $accessToken->setAuthToken(null);
-            }
-        }
 
-        return $this;
-    }
 }

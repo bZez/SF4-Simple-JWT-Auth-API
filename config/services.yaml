@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+  TOKEN_HEADER: 'eyJjdHkiOiJKV1QiLCJUb2tlbiI6IkZpcnN0QXV0aEFQSSIsImFsZyI6IkhTMjU2IiwidHlwIjoiSldUIn0'
     TOKEN_SECRET: '53f1d8af82283491b2fe98310ccf9a75nE$!'
 services:
     # default configuration for services in *this* file

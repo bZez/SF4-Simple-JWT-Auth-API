@@ -60,12 +60,11 @@ class TokenAuthentication extends AbstractController
     public function checkPrivileges()
     {
         $decoded = Tokenizer::getPayload($this->accessToken, $this->secret);
-        $user = $decoded['user'];
         $method = $this->request->getMethod();
         $endpoint = explode('/', $this->endpoint);
         $segment = $endpoint[1];
         $action = $endpoint[2];
-        $privileges = $user['privileges'];
+        $privileges = $decoded['privileges'];
         /**
          * @Check Method
          */
@@ -95,7 +94,7 @@ class TokenAuthentication extends AbstractController
      */
     public function onKernelRequest()
     {
-        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/test')) {
+        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/login')) {
             try {
                 $this->checkToken();
                 $this->checkPrivileges();
