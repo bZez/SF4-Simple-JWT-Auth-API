@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="32141358-62b1-4010-a4b2-70f3fa27d0e4" name="Default Changelist" comment="">
+    <list default="true" id="32141358-62b1-4010-a4b2-70f3fa27d0e4" name="Default Changelist" comment="Authentication &amp; Access System">
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Authentication/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Authentication/AuthController.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/vendor/composer/" />
     <ignored path="$PROJECT_DIR$/vendor/psr/cache/" />
@@ -93,8 +91,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Controller/Authentication/AuthController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-374">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="85">
+              <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
               <folding>
                 <element signature="e#49#74#0#PHP" expanded="true" />
               </folding>
@@ -127,7 +125,7 @@
         <entry file="file://$PROJECT_DIR$/src/Controller/Authentication/SecurityController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
-              <caret line="6" column="47" lean-forward="true" selection-start-line="6" selection-end-line="7" />
+              <caret line="6" column="47" selection-start-line="6" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -513,7 +511,7 @@
       <updated>1572261667640</updated>
       <workItem from="1572261668704" duration="65195000" />
       <workItem from="1572859999258" duration="7751000" />
-      <workItem from="1572869829047" duration="12411000" />
+      <workItem from="1572869829047" duration="12897000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1572261727687</created>
@@ -599,11 +597,18 @@
       <option name="project" value="LOCAL" />
       <updated>1572893126032</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Authentication &amp; Access System">
+      <created>1572896179457</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1572896179457</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85357000" />
+    <option name="totallyTimeSpent" value="85843000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="32" width="1936" height="1176" extended-state="6" />
@@ -612,9 +617,9 @@
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.20628998" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.32981783" />
+      <window_info anchor="bottom" id="Terminal" order="1" weight="0.32981783" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="3" weight="0.32981783" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="3" visible="true" weight="0.32981783" />
       <window_info anchor="bottom" id="Database Console" order="4" weight="0.32981783" />
       <window_info anchor="bottom" id="Messages" order="5" weight="0.32981783" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
@@ -880,7 +885,7 @@
     <entry file="file://$PROJECT_DIR$/src/Controller/Authentication/SecurityController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="6" column="47" lean-forward="true" selection-start-line="6" selection-end-line="7" />
+          <caret line="6" column="47" selection-start-line="6" selection-end-line="7" />
         </state>
       </provider>
     </entry>
@@ -896,8 +901,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/Authentication/AuthController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-374">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="85">
+          <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
           <folding>
             <element signature="e#49#74#0#PHP" expanded="true" />
           </folding>
