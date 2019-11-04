@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ReallySimpleJWT\Token as Tokenizer;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -43,10 +45,16 @@ class AuthToken
      */
     private $ip;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AccessToken", mappedBy="authToken", orphanRemoval=true)
+     */
+    private $accessTokens;
+
 
     public function __construct()
     {
         $this->creation = new \DateTime();
+        $this->accessTokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,5 +129,36 @@ class AuthToken
         if ($expireDate !== $tokenExpireDate)
             throw new Exception('Invalid or modified token...',000004);
 
+    }
+
+    /**
+     * @return Collection|AccessToken[]
+     */
+    public function getAccessTokens(): Collection
+    {
+        return $this->accessTokens;
+    }
+
+    public function addAccessToken(AccessToken $accessToken): self
+    {
+        if (!$this->accessTokens->contains($accessToken)) {
+            $this->accessTokens[] = $accessToken;
+            $accessToken->setAuthToken($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccessToken(AccessToken $accessToken): self
+    {
+        if ($this->accessTokens->contains($accessToken)) {
+            $this->accessTokens->removeElement($accessToken);
+            // set the owning side to null (unless already changed)
+            if ($accessToken->getAuthToken() === $this) {
+                $accessToken->setAuthToken(null);
+            }
+        }
+
+        return $this;
     }
 }

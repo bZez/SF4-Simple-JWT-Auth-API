@@ -1,7 +1,8 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Listener;
 
+use App\Entity\AccessToken;
 use App\Entity\AuthToken;
 use ReallySimpleJWT\Token as Tokenizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,22 +10,24 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class TokenAuthentication
+ * @package App\Listener
+ */
 class TokenAuthentication extends AbstractController
 {
     private $request;
     private $authToken;
+    private $accessToken;
     private $secret;
-    private $decoded;
-    private $user;
     private $endpoint;
 
     public function __construct(ParameterBagInterface $params)
     {
         $this->request = Request::createFromGlobals();
-        $this->authToken = $this->request->headers->get('Authorization');
+        $this->authToken = $this->request->headers->get('API-Authorization');
+        $this->accessToken = $this->request->headers->get('ACCESS-Authorization');
         $this->secret = $params->get('TOKEN_SECRET');
-        $this->decoded = Tokenizer::getPayload($this->authToken, $this->secret);
-        $this->user = $this->decoded['user'];
         $this->endpoint = $this->request->server->get('REDIRECT_URL');
     }
 
@@ -33,14 +36,18 @@ class TokenAuthentication extends AbstractController
      */
     public function checkToken()
     {
-        $existingTokens = $this->getDoctrine()->getRepository(AuthToken::class);
-        if (!($token = $this->authToken))
+        $existingAuthTokens = $this->getDoctrine()->getRepository(AuthToken::class);
+        $existingAccessTokens = $this->getDoctrine()->getRepository(AccessToken::class);
+        if (!($authToken = $this->authToken) || !($accessToken = $this->accessToken))
             throw new Exception('Token is missing...', 000002);
-        if (!($token = $existingTokens->findOneBy(['value' => $token])))
+        if (!($authToken = $existingAuthTokens->findOneBy(['value' => $authToken])) || !($accessToken = $existingAccessTokens->findOneBy(['value' => $accessToken])))
             throw new Exception('Unrecognized token...', 000003);
+        if ($authToken !== $accessToken->getAuthToken())
+            throw new Exception('Imcompatible tokens', 000007);
         else {
             try {
-                $token->isValid($this->secret);
+                $authToken->isValid($this->secret);
+                $accessToken->isValid($this->secret);
             } catch (Exception $e) {
                 die($e->getMessage());
             }
@@ -52,11 +59,13 @@ class TokenAuthentication extends AbstractController
      */
     public function checkPrivileges()
     {
+        $decoded = Tokenizer::getPayload($this->accessToken, $this->secret);
+        $user = $decoded['user'];
         $method = $this->request->getMethod();
         $endpoint = explode('/', $this->endpoint);
         $segment = $endpoint[1];
         $action = $endpoint[2];
-        $privileges = $this->user['privileges'];
+        $privileges = $user['privileges'];
         /**
          * @Check Method
          */
@@ -68,13 +77,13 @@ class TokenAuthentication extends AbstractController
                 /**
                  * @Check Action
                  */
-                if(is_numeric($action))
+                if (is_numeric($action))
                     $action = "show";
                 if (!in_array($action, $privileges[$method][$segment])) {
                     throw new Exception("You can't " . $action . " " . $segment, 000007);
                 }
             } else {
-                throw new Exception("You can't access '" . $segment, 000006);
+                throw new Exception("You can't access " . $segment, 000006);
             }
         } else {
             throw new Exception('Forbidden access...', 000005);
@@ -86,7 +95,7 @@ class TokenAuthentication extends AbstractController
      */
     public function onKernelRequest()
     {
-        if ($this->endpoint !== '/auth/login') {
+        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/test')) {
             try {
                 $this->checkToken();
                 $this->checkPrivileges();

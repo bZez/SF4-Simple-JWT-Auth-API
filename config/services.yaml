@@ -27,6 +27,6 @@ services:
     # please note that last definitions always *replace* previous ones
 # app/config/config.yml
     kernel.listener.TokenAuthentication:
-        class: App\EventListener\TokenAuthentication
+        class: App\Listener\TokenAuthentication
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

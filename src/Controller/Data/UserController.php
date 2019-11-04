@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Data;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class UserController
+ * @package App\Controller\Data
+ */
 class UserController extends AbstractController
 {
     /**

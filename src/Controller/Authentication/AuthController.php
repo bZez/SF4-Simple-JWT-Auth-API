@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Authentication;
 
 use App\Entity\AuthToken;
 use App\Entity\User;
@@ -18,16 +18,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
+/**
+ * Class AuthController
+ * @package App\Controller\Authentication
+ */
 class AuthController extends AbstractController
 {
     private $request;
-    private  $secret;
+    private $secret;
 
     public function __construct(ParameterBagInterface $params)
     {
         $this->secret = $params->get('TOKEN_SECRET');
-        $this->request =  Request::createFromGlobals();
+        $this->request = Request::createFromGlobals();
     }
 
     /**
@@ -37,9 +40,9 @@ class AuthController extends AbstractController
     public function isTokenValid($t)
     {
         $expireDate = strtotime(($t->getExpiration())->format('Y-m-d'));
-        $tokenExpireDate = Tokenizer::getPayload($t->getValue(),$this->secret)['exp'];
+        $tokenExpireDate = Tokenizer::getPayload($t->getValue(), $this->secret)['exp'];
         if ($expireDate !== $tokenExpireDate) {
-            throw new Exception('Invalid or modified token...',000001);
+            throw new Exception('Invalid or modified token...', 000001);
         }
     }
 
@@ -68,11 +71,10 @@ class AuthController extends AbstractController
             //SET TOKEN PARAMS
             $userInfos = [
                 "login" => $user->getEmail(),
-                "roles" => $user->getRoles(),
-                "privileges" => $user->getPrivileges()
+                "roles" => $user->getRoles()
             ];
             $t = $tokenBuilder->setContentType('JWT')
-                ->setHeaderClaim('Token','FirstAuthAPI')
+                ->setHeaderClaim('Token', 'FirstAuthAPI')
                 ->setSecret($this->secret)
                 ->setIssuer('API Authenticator')
                 ->setSubject('api-access-token')
@@ -80,7 +82,7 @@ class AuthController extends AbstractController
                 ->setExpiration($exp)
                 ->setIssuedAt(time())
                 ->setJwtId(md5(uniqid('TOKEN')))
-                ->setPayloadClaim('user',$userInfos)
+                ->setPayloadClaim('user', $userInfos)
                 ->build();
         }
         $token->setUser($user);
@@ -98,7 +100,7 @@ class AuthController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function authenticate(UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
+    public function authenticate(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder)
     {
         $request = $this->request;
         if (($login = $request->getUser()) && ($pwd = $request->getPassword())) {
@@ -135,11 +137,33 @@ class AuthController extends AbstractController
      */
     public function user()
     {
-        $token = Tokenizer::getPayload($this->request->headers->get('Authorization'),$this->secret);
+        $token = Tokenizer::getPayload($this->request->headers->get('Authorization'), $this->secret);
         return $this->json([
             "User" => $token['user']['login'],
             "Rights" => $token['user']['privileges'],
             "Expire" => date('d.m.Y - H:i:s', $token['exp'])
         ]);
+    }
+
+    /**
+     * @Route("/test")
+     */
+    public function test()
+    {
+        $API_PUBLIC_KEY = "eyJjdHkiOiJKV1QiLCJUb2tlbiI6IkZpcnN0QXV0aEFQSSIsImFsZyI6IkhTMjU2IiwidHlwIjoiSldUIn0.eyJpc3MiOiJBUEkgQXV0aGVudGljYXRvciIsInN1YiI6ImFwaS1hY2Nlc3MtdG9rZW4iLCJhdWQiOiJodHRwczpcL1wveW91cmFwaS5jb20iLCJleHAiOjE2MDQ0NDgwMDAsImlhdCI6MTU3Mjg2Njg1MCwianRpIjoiZWU1Mzk2MWE5MDY0N2YyMDQ3MmY0MmEyOThiOWUzNjEiLCJ1c2VyIjp7ImxvZ2luIjoic2FtQGJ6ZXouZGV2Iiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdfX0.SdsXBPZXLfDqNpDe6lVd0qHGvAqqJzSGqsX1JFhR9ZQ";
+        $API_PRIVATE_KEY = "eyJjdHkiOiJKV1QiLCJUb2tlbiI6IkZpcnN0QXV0aEFQSSIsImFsZyI6IkhTMjU2IiwidHlwIjoiSldUIn0.eyJpc3MiOiJBUEkgQXV0aGVudGljYXRvciIsInN1YiI6ImFwaS1hY2Nlc3MtdG9rZW4iLCJhdWQiOiJodHRwczpcL1wveW91cmFwaS5jb20iLCJleHAiOjE2MDQ0NDgwMDAsImlhdCI6MTU3Mjg2MTQ3MiwianRpIjoiNjZkNTNkODVkOTNjMWE5MTM4YWFjYTJkZGFlYjU3ZDQiLCJ1c2VyIjp7ImxvZ2luIjoic2FtQGJ6ZXouZGV2Iiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJwcml2aWxlZ2VzIjp7IkdFVCI6eyJ1c2VycyI6WyJzaG93IiwibGlzdCJdfSwiUFVUIjpbXSwiUE9TVCI6W10sIkRFTEVURSI6W119fX0.Ht6pLm86hL0oAWfN6MpRvUlde1cSzsJr68J42xO7a7Y";
+        $opts = array(
+            'http' => array(
+                'method' => "GET",
+                'header' => "API-Authorization: $API_PUBLIC_KEY\r\n".
+                    "ACCESS-Authorization: $API_PRIVATE_KEY\r\n"
+            )
+        );
+
+        $context = stream_context_create($opts);
+        $endpoint = file_get_contents('http://api.jwt/users/list', false, $context);
+        $response = json_decode($endpoint);
+
+        return new JsonResponse($response);
     }
 }
