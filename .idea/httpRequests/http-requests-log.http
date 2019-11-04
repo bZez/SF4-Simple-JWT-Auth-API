@@ -1,0 +1,9 @@
+GET http://api.jwt/auth/login
+Accept: */*
+Cache-Control: no-cache
+Authorization: Basic c2FtQGJ6ZXouZGV2OjEyMzQ1Ng==
+
+<> 2019-11-04T111927.200.json
+
+###
+
