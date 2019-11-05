@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/", name="api_front_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -30,5 +30,13 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/logout",name="api_front_logout")
+     */
+    public function logout()
+    {
+        $this->redirectToRoute('api_front_login');
     }
 }

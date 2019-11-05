@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-md navbar-light navbar-top bg-transparent">
+    <a class="navbar-brand" href="#">
+        <h1 class="h4 mb-0" style="line-height: 0.5"><span class="font-weight-bold"><img
+                        src="{{ asset('svg/api-logo.svg') }}" alt="API Logo" width="40px"> API</span>Access</h1>
+    </a>
+    <button onclick="$(this).toggleClass('active')" class="nav-icon navbar-toggler border-0" type="button"
+            data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <div></div>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if app.request.get('_route') is same as('api_front_dash') %}active{% endif %}">
+                <a class="nav-link" href="{{ path('api_front_dash') }}"><i class="fas fa-tachometer-alt"></i> &nbsp;
+                    Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item {% if app.request.get('_route') is same as('api_front_users') %}active{% endif %}">
+                <a class="nav-link" href="{{ path('api_front_users') }}"><i class="fas fa-users"></i> &nbsp; Users</a>
+            </li>
+            <li class="nav-item {% if app.request.get('_route') is same as('api_front_data') %}active{% endif %}">
+                <a class="nav-link" href="#"><i class="fas fa-database"></i> &nbsp; Data</a>
+            </li>
+            <li class="nav-item {% if app.request.get('_route') is same as('api_front_activity') %}active{% endif %}">
+                <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
+            </li>
+        </ul>
+        <a href="{{ path('api_front_logout') }}" class="btn btn btn-primary shadow-none mr-2" type="submit">
+            <i class="fas fa-sign-out-alt"></i> &nbsp; Logout
+        </a>
+        {#<form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>#}
+    </div>
+</nav>

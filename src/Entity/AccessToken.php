@@ -8,6 +8,7 @@ use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token as Tokenizer;
 use ReallySimpleJWT\Validate;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**

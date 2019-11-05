@@ -43,7 +43,7 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        return 'api_front_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -89,13 +89,13 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
+        return new RedirectResponse($this->urlGenerator->generate('api_front_dash'));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
+//        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('api_front_login');
     }
 }

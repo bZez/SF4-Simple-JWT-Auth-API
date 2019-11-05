@@ -32,6 +32,18 @@ class TokenAuthentication extends AbstractController
     }
 
     /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
+    function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
+
+
+    /**
      * @Check Token
      */
     public function checkToken()
@@ -94,7 +106,7 @@ class TokenAuthentication extends AbstractController
      */
     public function onKernelRequest()
     {
-        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/login')) {
+        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/') && (!$this->startsWith($this->endpoint, '/_'))) {
             try {
                 $this->checkToken();
                 $this->checkPrivileges();

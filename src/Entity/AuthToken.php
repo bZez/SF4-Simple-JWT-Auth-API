@@ -9,6 +9,7 @@ use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token as Tokenizer;
 use ReallySimpleJWT\Validate;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -49,7 +50,7 @@ class AuthToken
     private $ip;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\AccessToken", mappedBy="authToken")
+     * @ORM\OneToOne(targetEntity="App\Entity\AccessToken")
      * @ORM\JoinColumn(nullable=true)
      */
     private $accessToken;
