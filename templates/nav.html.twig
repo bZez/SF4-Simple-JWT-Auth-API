@@ -24,7 +24,8 @@
                 <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
             </li>
         </ul>
-        <a href="{{ path('api_front_logout') }}" class="btn btn btn-primary shadow-none mr-2" type="submit">
+        <a href="{{ path('api_front_logout') }}" class="btn btn btn-primary shadow-none mr-2" id="btn-logout"
+           type="submit">
             <i class="fas fa-sign-out-alt"></i> &nbsp; Logout
         </a>
         {#<form class="form-inline mt-2 mt-md-0">
@@ -33,14 +34,14 @@
         </form>#}
     </div>
 </nav>
-<div class="container-fluid">
-    <div class="user-detail-box ml-2 row">
+<div class="container-fluid" hidden>
+    <div class="user-detail-box ml-2 row align-items-center">
         <div class="col-3">
-            <span class="user-pics">JP</span>
+            <div class="user-pics text-center font-weight-bold text-white rounded-circle">{{ app.user.email[:1]|upper }}</div>
         </div>
         <div class="col-9">
-            <span class="user-name d-block">Jean-Pierre</span>
-            <span class="user-role d-block">ADMINISTRATEUR</span>
+            <span class="user-name d-block">{{ app.user.email }}</span>
+            <span class="user-role d-block">{{ app.user.roles[0] }}</span>
         </div>
     </div>
 </div>

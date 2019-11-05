@@ -13,14 +13,14 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<div id="overlayer"></div>
-<span class="loader">
-  <span class="loader-inner"></span>
-</span>
 {% if app.user %}
+    <div id="overlayer"></div>
+    <span class="loader">
+        <span class="loader-inner"></span>
+    </span>
     {% include 'nav.html.twig' %}
 {% endif %}
-<div class="container-fluid h-100 ml-2 mr-2">
+<div class="container-fluid">
     {% block body %}{% endblock %}
 </div>
 <script

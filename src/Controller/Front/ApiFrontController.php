@@ -4,6 +4,7 @@
 namespace App\Controller\Front;
 
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,8 +28,11 @@ class ApiFrontController extends AbstractController
     /**
      * @Route("/users",name="api_front_users")
      */
-    public function users()
+    public function users(UserRepository $repository)
     {
-        return $this->render('front/users.html.twig');
+        $users = $repository->findAll();
+        return $this->render('front/users.html.twig', [
+            'users' => $users
+        ]);
     }
 }

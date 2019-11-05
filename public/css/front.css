@@ -2,12 +2,13 @@ html, body {
     margin: 0;
     padding: 0;
     height: calc(100% - 75px);
+
 }
 
 body {
     background: #F9F9FF !important;
     color: #A2B7DC !important;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body::after {
@@ -47,6 +48,10 @@ input[type="email"], input[type="text"], input[type="password"] {
     color: #F9F9FF;
 }
 
+.text-green {
+    color: #2ee09d;
+}
+
 ::-webkit-input-placeholder { /* Edge */
     color: #F9F9FF !important;
 }
@@ -67,10 +72,10 @@ input[type="email"], input[type="text"], input[type="password"] {
 }
 
 #overlayer {
+    z-index: 99999;
     width: 100%;
     height: 100%;
     position: absolute;
-    z-index: 1;
     background: rgba(255, 255, 255, .8);
 }
 
@@ -92,6 +97,25 @@ input[type="email"], input[type="text"], input[type="password"] {
     width: 100%;
     background-color: #2ee09d;
     animation: loader-inner 2s infinite ease-in;
+}
+
+.section-header {
+    z-index: 12;
+    border-bottom: 1px;
+}
+
+.section-h3 {
+    color: #324355;
+    margin-bottom: 0 !important;
+}
+
+.section-table-header {
+    z-index: 11;
+    background-color: #F9F9FF;
+}
+
+.user-result-row:hover {
+    background-color: #F9F9FF;
 }
 
 @keyframes loader {

@@ -9,6 +9,7 @@
 }
 
 #navbarCollapse.show {
+    z-index: 9;
     opacity: 0;
     position: fixed;
     margin: 5px 10px;
@@ -81,6 +82,10 @@
     border: none;
 }
 
+#navbarCollapse.show a#btn-logout {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+}
 .nav-item {
     padding: 0 25px 5px 25px;
 }
@@ -89,15 +94,20 @@
     color: #A2B7DC !important;
 }
 
+.nav-item a:hover {
+    color: #2EE09D !important;
+}
+
 .nav-item.active a {
     color: #FFB311 !important;
 }
+
 
 /*USER INFO*/
 .user-detail-box {
     border-radius: 5px;
     width: 250px;
-    padding: 1.2rem;
+    padding: 1.2rem 0;
     background: #F9F9FF;
     box-shadow: 0 0 5px rgba(144, 163, 201, 0.4);
 }
@@ -110,4 +120,11 @@
 
 .user-role {
     font-size: small;
+}
+
+.user-pics {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #2ee09d !important;
 }
