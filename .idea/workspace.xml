@@ -2,27 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32141358-62b1-4010-a4b2-70f3fa27d0e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/css/front.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/css/nav.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/Front/ApiFrontController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/front/dash.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/front/users.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SimpleJWTAuthApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SimpleJWTAuthApi.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Authentication/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Authentication/SecurityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/AccessToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/AccessToken.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/AuthToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/AuthToken.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Listener/TokenAuthentication.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Listener/TokenAuthentication.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Security/ApiAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/ApiAuthenticator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/nav.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/vendor/composer/" />
     <ignored path="$PROJECT_DIR$/vendor/psr/cache/" />
@@ -136,7 +119,7 @@
         <entry file="file://$PROJECT_DIR$/templates/security/login.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="731">
-              <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+              <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#1;n#div#1;n#form#0;n#div#0;n#!!top" expanded="true" />
@@ -148,8 +131,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/front.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="71" column="36" selection-start-line="71" selection-start-column="36" selection-end-line="71" selection-end-column="36" />
+            <state relative-caret-position="586">
+              <caret line="66" column="1" selection-start-line="66" selection-start-column="1" selection-end-line="66" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -166,8 +149,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/nav.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-437">
-              <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+            <state relative-caret-position="396">
+              <caret line="96" column="18" selection-start-line="96" selection-start-column="18" selection-end-line="96" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -175,8 +158,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
+            <state relative-caret-position="374">
+              <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -185,7 +168,7 @@
         <entry file="file://$PROJECT_DIR$/templates/front/dash.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
-              <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -193,15 +176,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/nav.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="88" lean-forward="true" selection-start-line="12" selection-start-column="88" selection-end-line="12" selection-end-column="88" />
+            <state relative-caret-position="498">
+              <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
               <folding>
                 <element signature="n#style#0;n#h1#0;n#a#0;n#nav#0;n#!!top" expanded="true" />
-                <element signature="e#808#814#0#HTML" expanded="true" />
-                <element signature="e#994#1000#0#HTML" expanded="true" />
-                <element signature="e#1139#1145#0#HTML" expanded="true" />
-                <element signature="e#1285#1291#0#HTML" expanded="true" />
-                <element signature="e#1456#1462#0#HTML" expanded="true" />
+                <element signature="e#862#868#0#HTML" expanded="true" />
+                <element signature="e#1131#1137#0#HTML" expanded="true" />
+                <element signature="e#1331#1337#0#HTML" expanded="true" />
+                <element signature="e#1532#1538#0#HTML" expanded="true" />
+                <element signature="e#1741#1747#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -281,13 +264,13 @@
         <option value="$PROJECT_DIR$/public/css/hamburgers.css" />
         <option value="$PROJECT_DIR$/public/css/nav;css.css" />
         <option value="$PROJECT_DIR$/templates/front/home.html.twig" />
-        <option value="$PROJECT_DIR$/public/css/nav.css" />
         <option value="$PROJECT_DIR$/src/Controller/Front/ApiFrontController.php" />
         <option value="$PROJECT_DIR$/templates/front/dash.html.twig" />
         <option value="$PROJECT_DIR$/src/Security/ApiAuthenticator.php" />
         <option value="$PROJECT_DIR$/public/css/front.css" />
         <option value="$PROJECT_DIR$/templates/front/users.html.twig" />
         <option value="$PROJECT_DIR$/templates/base.html.twig" />
+        <option value="$PROJECT_DIR$/public/css/nav.css" />
         <option value="$PROJECT_DIR$/templates/nav.html.twig" />
       </list>
     </option>
@@ -592,7 +575,7 @@
       <updated>1572261667640</updated>
       <workItem from="1572261668704" duration="65195000" />
       <workItem from="1572859999258" duration="7751000" />
-      <workItem from="1572869829047" duration="37267000" />
+      <workItem from="1572869829047" duration="38338000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1572261727687</created>
@@ -699,11 +682,18 @@
       <option name="project" value="LOCAL" />
       <updated>1572896921089</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Start Front">
+      <created>1572966723445</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1572966723445</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110213000" />
+    <option name="totallyTimeSpent" value="111284000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="32" width="1936" height="1176" extended-state="6" />
@@ -738,7 +728,8 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="First Commit" />
     <MESSAGE value="Authentication" />
     <MESSAGE value="Add TokenAuth Listener" />
@@ -751,7 +742,8 @@
     <MESSAGE value="Params autowiring &amp; Token Validation" />
     <MESSAGE value="Put constructors" />
     <MESSAGE value="Authentication &amp; Access System" />
-    <option name="LAST_COMMIT_MESSAGE" value="Authentication &amp; Access System" />
+    <MESSAGE value="Start Front" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start Front" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1039,15 +1031,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/front.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="71" column="36" selection-start-line="71" selection-start-column="36" selection-end-line="71" selection-end-column="36" />
+        <state relative-caret-position="586">
+          <caret line="66" column="1" selection-start-line="66" selection-start-column="1" selection-end-line="66" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/security/login.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="731">
-          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+          <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#1;n#div#1;n#form#0;n#div#0;n#!!top" expanded="true" />
@@ -1058,35 +1050,35 @@
     <entry file="file://$PROJECT_DIR$/templates/front/dash.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
+        <state relative-caret-position="374">
+          <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/nav.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-437">
-          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        <state relative-caret-position="396">
+          <caret line="96" column="18" selection-start-line="96" selection-start-column="18" selection-end-line="96" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/nav.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="88" lean-forward="true" selection-start-line="12" selection-start-column="88" selection-end-line="12" selection-end-column="88" />
+        <state relative-caret-position="498">
+          <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
           <folding>
             <element signature="n#style#0;n#h1#0;n#a#0;n#nav#0;n#!!top" expanded="true" />
-            <element signature="e#808#814#0#HTML" expanded="true" />
-            <element signature="e#994#1000#0#HTML" expanded="true" />
-            <element signature="e#1139#1145#0#HTML" expanded="true" />
-            <element signature="e#1285#1291#0#HTML" expanded="true" />
-            <element signature="e#1456#1462#0#HTML" expanded="true" />
+            <element signature="e#862#868#0#HTML" expanded="true" />
+            <element signature="e#1131#1137#0#HTML" expanded="true" />
+            <element signature="e#1331#1337#0#HTML" expanded="true" />
+            <element signature="e#1532#1538#0#HTML" expanded="true" />
+            <element signature="e#1741#1747#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

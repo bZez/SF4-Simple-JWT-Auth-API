@@ -92,3 +92,22 @@
 .nav-item.active a {
     color: #FFB311 !important;
 }
+
+/*USER INFO*/
+.user-detail-box {
+    border-radius: 5px;
+    width: 250px;
+    padding: 1.2rem;
+    background: #F9F9FF;
+    box-shadow: 0 0 5px rgba(144, 163, 201, 0.4);
+}
+
+.user-name {
+    color: #324355;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.user-role {
+    font-size: small;
+}
