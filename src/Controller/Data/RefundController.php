@@ -12,8 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RefundController extends AbstractController
 {
     /**
-     * @param $id
+     * @param $id int
      * @return JsonResponse
+     *@api /refunds/show
      */
     public function show($id)
     {
@@ -37,7 +38,7 @@ class RefundController extends AbstractController
     }
 
     /**
-     * @param $id
+     * @param $id int
      * @return JsonResponse
      */
     public function edit($id)

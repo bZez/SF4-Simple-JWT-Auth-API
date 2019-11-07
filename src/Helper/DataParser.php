@@ -26,18 +26,46 @@ class DataParser
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
                 $className = explode('.', $fileinfo->getFilename())[0];
-                $f = new ReflectionClass('App\Controller\Data\\' . $className);
+                $c = new ReflectionClass('App\Controller\Data\\' . $className);
                 $this->controllers[$i]['name'] = substr($className, 0, -10);
-                foreach ($f->getMethods() as $id => $m) {
-                    if ($m->class == $f->name) {
-                        $this->controllers[$i]['methods'][] = $m->name;
+                foreach ($c->getMethods() as $id => $m) {
+                    if ($m->class == $c->name) {
+                        $this->controllers[$i]['methods'][] = [
+                            'name' => $m->name,
+                            'comments' => $this->parseComments($c, $m)
+                        ];
                     }
                 }
-                $this->controllers[$i]['comments'][] = $f->getDocComment();
                 $i++;
             }
 
         }
+    }
+
+    function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
+
+    public function parseComments($c, $m)
+    {
+        $haystack = $c->getMethod($m->name)->getDocComment();
+        $start = "/**       ";
+        $end = "     */";
+        $haystack = str_replace($start, "\r\n", $haystack);
+        $haystack = str_replace($end, "", $haystack);
+        $haystack = str_replace('     *', "", $haystack);
+        $separator = "\r\n";
+        $line = strtok($haystack, $separator);
+        $comments = [];
+        while (!is_bool($line)) {
+            # do something with $line
+            $line = strtok($separator);
+            if (is_string($line))
+                $comments[] = $line;
+        }
+        return $comments;
     }
 
     public function getControllers()

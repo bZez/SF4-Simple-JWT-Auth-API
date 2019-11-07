@@ -15,7 +15,7 @@ class UserController extends AbstractController
      * @param $id
      * @return JsonResponse
      */
-    public function ssdvqshow($id)
+    public function show($id)
     {
         if ($id == 1) {
             return $this->json([

@@ -5,12 +5,23 @@
 {% block body %}
     {% for controller in controllers %}
         <div class="jumbotron">
-            <h3>{{ controller.name }}</h3>
-            <ul>
-                {% for method in controller.methods %}
-                    <li>{{ method }}</li>
-                {% endfor %}
-            </ul>
+            <div class="row">
+                <div class="col-6">
+                    <h3>{{ controller.name }}</h3>
+                    <ul>
+                        {% for method in controller.methods %}
+                            <li>{{ method.name|upper }}<br>
+                                {% for comment in method.comments %}
+                                    {{ comment }}<br>
+                                {% endfor %}</li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-6">
+                    {#                   {{ dump(controller.method.comments) }}#}
+                </div>
+            </div>
         </div>
     {% endfor %}
 {% endblock %}

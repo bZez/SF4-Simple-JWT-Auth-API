@@ -51,4 +51,31 @@ class ApiFrontController extends AbstractController
             'controllers' => $controllers
         ]);
     }
+
+    public function generateRemotingApi()
+    {
+
+        $list = array();
+        foreach ($this->remotingBundles as $bundle) {
+            $bundleRef = new \ReflectionClass($bundle);
+            $controllerDir = new Finder();
+            $controllerDir->files()->in(dirname($bundleRef->getFileName()) . '/Controller/')->name('/.*Controller\\.php$/');
+            foreach ($controllerDir as $controllerFile) {
+                /** @var SplFileInfo $controllerFile */
+                $controller = $bundleRef->getNamespaceName() . "\\Controller\\" . substr($controllerFile->getFilename(), 0, -4);
+                $controllerRef = new \ReflectionClass($controller);
+                foreach ($controllerRef->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                    /** @var $methodDirectAnnotation Direct */
+                    $methodDirectAnnotation = $this->annoReader->getMethodAnnotation($method, 'Tpg\\ExtjsBundle\\Annotation\\Direct');
+                    if ($methodDirectAnnotation !== null) {
+                        $nameSpace = str_replace("\\", ".", $bundleRef->getNamespaceName());
+                        $className = str_replace("Controller", "", $controllerRef->getShortName());
+                        $methodName = str_replace("Action", "", $method->getName());
+                        $list[$nameSpace][$className][] = array('name' => $methodName, 'len' => count($method->getParameters()));
+                    }
+                }
+            }
+        }
+        return $list;
+    }
 }
