@@ -15,6 +15,7 @@ class RefundController extends AbstractController
      * @param $id int
      * @return JsonResponse
      *@api /refunds/show
+     * @method GET
      */
     public function show($id)
     {
@@ -40,6 +41,8 @@ class RefundController extends AbstractController
     /**
      * @param $id int
      * @return JsonResponse
+     *@api /refunds/edit
+     * @method PUT
      */
     public function edit($id)
     {
@@ -64,6 +67,8 @@ class RefundController extends AbstractController
 
     /**
      * @return JsonResponse
+     * @api /refunds/list
+     * @method GET
      */
     public function list()
     {
