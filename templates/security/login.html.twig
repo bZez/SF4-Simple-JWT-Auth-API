@@ -3,7 +3,7 @@
 {% block title %}Authentication{% endblock %}
 
 {% block body %}
-    <div class="row align-items-center text-center h-100" style="margin-top: 75px;">
+    <div class="row align-items-center text-center" style="height: 100vh;">
         <form method="post" class="m-auto">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

@@ -10,18 +10,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% if app.request.get('_route') is same as('api_front_dash') %}active{% endif %}">
-                <a class="nav-link" href="{{ path('api_front_dash') }}"><i class="fas fa-tachometer-alt"></i> &nbsp;
+            <li class="nav-item {% if '_dash' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="./"><i class="fas fa-tachometer-alt"></i> &nbsp;
                     Dashboard <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item {% if app.request.get('_route') is same as('api_front_users') %}active{% endif %}">
-                <a class="nav-link" href="{{ path('api_front_users') }}"><i class="fas fa-users"></i> &nbsp; Users</a>
+            <li class="nav-item {% if '_users' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="./users"><i class="fas fa-users"></i> &nbsp; Users</a>
             </li>
-            <li class="nav-item {% if app.request.get('_route') is same as('api_front_data') %}active{% endif %}">
-                <a class="nav-link" href="#"><i class="fas fa-database"></i> &nbsp; Data</a>
+            <li class="nav-item {% if '_data' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="./datas"><i class="fas fa-database"></i> &nbsp; Data</a>
             </li>
-            <li class="nav-item {% if app.request.get('_route') is same as('api_front_activity') %}active{% endif %}">
-                <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
+            <li class="nav-item {% if '_activity' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="./activity"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
             </li>
         </ul>
         <a href="{{ path('api_front_logout') }}" class="btn btn btn-primary shadow-none mr-2" id="btn-logout"

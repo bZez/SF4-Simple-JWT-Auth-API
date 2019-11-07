@@ -42,12 +42,13 @@ class AuthController extends AbstractController
     /**
      * @param User $user
      * @return string|null
+     * @Route("/_secure/generate/auth/{user}",name="api_back_generate_auth")
      */
     public function generateAuthToken(User $user)
     {
         if ($user->getAuthToken()) {
             $token = $user->getAuthToken();
-            return $token->getValue();
+            return $this->json([$token->getValue()]);
         } else {
             $token = new AuthToken($user);
         }
@@ -55,7 +56,7 @@ class AuthController extends AbstractController
         $this->em->persist($token);
         $this->em->persist($user);
         $this->em->flush();
-        return $token->getValue();
+        return $this->json([$token->getValue()]);
     }
 
     /**

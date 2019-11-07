@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AccessController extends AbstractController
 {
@@ -32,6 +33,7 @@ class AccessController extends AbstractController
     /**
      * @param User $user
      * @return String Token
+     * @Route("/_secure/generate/access/{user}",name="api_back_generate_access")
      */
     public function generateAccessToken(User $user)
     {
@@ -44,6 +46,6 @@ class AccessController extends AbstractController
         $authToken->setAccessToken($accessToken);
         $this->em->persist($authToken);
         $this->em->flush();
-        return $accessToken->getValue();
+        return $this->json([$accessToken->getValue()]);
     }
 }

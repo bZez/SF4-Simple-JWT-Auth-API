@@ -6,16 +6,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class UserController
+ * Class RefundController
  * @package App\Controller\Data
  */
-class UserController extends AbstractController
+class RefundController extends AbstractController
 {
     /**
      * @param $id
      * @return JsonResponse
      */
-    public function ssdvqshow($id)
+    public function show($id)
     {
         if ($id == 1) {
             return $this->json([

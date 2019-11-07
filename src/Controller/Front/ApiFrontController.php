@@ -4,15 +4,18 @@
 namespace App\Controller\Front;
 
 
+use App\Helper\DataParser;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use \ReflectionException;
 
 /**
  * Class ApiFrontController
  * @package App\Controller\Front
- * @Route("/_secure")
+ * @Route("/~private")
  */
 class ApiFrontController extends AbstractController
 {
@@ -33,6 +36,19 @@ class ApiFrontController extends AbstractController
         $users = $repository->findAll();
         return $this->render('front/users.html.twig', [
             'users' => $users
+        ]);
+    }
+
+    /**
+     * @Route("/datas",name="api_front_datas")
+     * @throws ReflectionException
+     */
+    public function datas(KernelInterface $kernel)
+    {
+        $parser = new DataParser($kernel);
+        $controllers = $parser->getControllers();
+        return $this->render('front/data.html.twig', [
+            'controllers' => $controllers
         ]);
     }
 }

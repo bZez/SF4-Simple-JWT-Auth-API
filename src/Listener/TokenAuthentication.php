@@ -106,7 +106,9 @@ class TokenAuthentication extends AbstractController
      */
     public function onKernelRequest()
     {
-        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/') && (!$this->startsWith($this->endpoint, '/_'))) {
+        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/')
+            && (!$this->startsWith($this->endpoint, '/_'))
+            && (!$this->startsWith($this->endpoint, '/~'))) {
             try {
                 $this->checkToken();
                 $this->checkPrivileges();

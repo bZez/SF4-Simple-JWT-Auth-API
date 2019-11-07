@@ -1,15 +1,15 @@
 .navbar-brand {
-    z-index: 10;
+    z-index: 101;
     color: #A2B7DC !important;
     transition: all .5s ease-in-out;
 }
 
 .navbar-light .navbar-toggler {
-    z-index: 10;
+    z-index: 101;
 }
 
 #navbarCollapse.show {
-    z-index: 9;
+    z-index: 100;
     opacity: 0;
     position: fixed;
     margin: 5px 10px;

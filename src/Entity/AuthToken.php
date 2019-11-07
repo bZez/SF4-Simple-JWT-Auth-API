@@ -68,7 +68,7 @@ class AuthToken
         ];
         try {
             $t = $tokenBuilder->setContentType('JWT')
-                ->setHeaderClaim('Token', 'FirstAuthAPI')
+                ->setHeaderClaim('for', strtoupper($user->getLastName()) . ' ' . ucfirst($user->getFirstName()))
                 ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
                 ->setIssuer('API Authenticator')
                 ->setSubject('api-auth-token')

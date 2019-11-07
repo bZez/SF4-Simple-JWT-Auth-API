@@ -52,7 +52,7 @@ class AccessToken
         $exp = strtotime($this->expiration->format('Y-m-d'));
         try {
             $t = $tokenBuilder->setContentType('JWT')
-                ->setHeaderClaim('Token', 'ApiAccessToken')
+                ->setHeaderClaim('auth', $auth->getId())
                 ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
                 ->setIssuer('API Access Generator')
                 ->setSubject('api-access-token')
@@ -62,7 +62,7 @@ class AccessToken
                 ->setJwtId(md5(uniqid('TOKEN')))
                 ->setPayloadClaim('privileges', $auth->getUser()->getPrivileges())
                 ->build();
-        } catch (ValidateException $e) {
+        } catch (Exception $e) {
             die("Build error...");
         }
         $this->value = $t->getToken();

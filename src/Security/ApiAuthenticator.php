@@ -32,6 +32,7 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $goto;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -75,6 +76,11 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+        if ($user->getRoles()[0] === 'ROLE_ADMIN') {
+            $this->goto = $this->urlGenerator->generate('api_back_dash');
+        } else {
+            $this->goto = $this->urlGenerator->generate('api_front_dash');
+        }
 
         return $user;
     }
@@ -89,7 +95,7 @@ class ApiAuthenticator extends AbstractFormLoginAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        return new RedirectResponse($this->urlGenerator->generate('api_front_dash'));
+        return new RedirectResponse($this->goto);
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
 //        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
