@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Data access{% endblock %}
 
 {% block body %}
     {% for controller in controllers %}
@@ -11,7 +11,8 @@
                     <h3>/{{ controller.name }}s</h3>
                     <h6>{{ controller.doc }}</h6>
                     <hr>
-                    <button class="btn btn btn-primary shadow-none" data-toggle="collapse"
+                    <button class="btn btn btn-primary shadow-none mb-3 mb-md-0 col-md-3 col-sm-12 m-0"
+                            data-toggle="collapse"
                             data-target="#method-{{ methodId }}" aria-expanded="false"
                             aria-controls="method-{{ methodId }}">
                         <i class="fa fas fa-eye"></i> Show/Hide endpoints
@@ -20,11 +21,21 @@
                         or (controller.name|lower~'s' in app.user.privileges['PUT']|keys)
                         or (controller.name|lower~'s' in app.user.privileges['POST']|keys)
                         or (controller.name|lower~'s' in app.user.privileges['DELETE']|keys) %}
-                        <span class="btn btn btn-secondary">
-                            <i class="fa fas fa-check"></i> You have already access right
+                        <span class="btn btn btn-secondary col-md-3 col-sm-12 m-0">
+                            <i class="fa fas fa-check"></i> You have access right
                         </span>
+                        <div class="input-group col-12 pl-0 pr-0 mt-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon3"><small class="font-weight-bold">Access Token</small></span>
+                            </div>
+                            <input type="text" class="form-control m-0 h-100 shadow-none" id="basic-url"
+                                   aria-describedby="basic-addon3" value="{{ app.user.authToken.value }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa fa-copy"></i></span>
+                            </div>
+                        </div>
                     {% else %}
-                        <button class="btn btn btn-danger shadow-none">
+                        <button class="btn btn btn-danger shadow-none col-md-3 col-sm-12">
                             <i class="fa fas fa-lock"></i> Request access right
                         </button>
                     {% endif %}
@@ -37,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6">
                                     <span class="d-inline-block btn-sm btn-primary btn-{{ method.method }} p-1 rounded font-weight-bold mb-2">{{ method.method }}</span>
                                     <pre class="bg-dark text-light w-100 p-2 rounded">{{ method.endpoint }}</pre>
                                     {% if method.params|length > 0 %}
@@ -70,22 +81,22 @@
                                         <h6 class="font-weight-bold">No parameters required</h6>
                                     {% endif %}
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-md-6 mt-3 mt-md-0">
                                     <div class="row">
                                         <div class="col-12">
                                             <ul class="nav nav-tabs border-0" id="codeTab" role="tablist"
                                                 style="margin-bottom:2px;">
-                                                <li class="nav-item small">
-                                                    <a class="d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
+                                                <li class="nav-item small w-50">
+                                                    <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
                                                        id="php-tab" data-toggle="tab" href="#php_{{ loop.index }}"
                                                        role="tab"
                                                        aria-controls="php" aria-selected="true">PHP</a>
                                                 </li>
-                                                <li class="nav-item small">
-                                                    <a class="d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
+                                                <li class="nav-item small w-50">
+                                                    <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
                                                        id="curl-tab" data-toggle="tab" href="#curl_{{ loop.index }}"
                                                        role="tab"
-                                                       aria-controls="curl" aria-selected="true">CURL</a>
+                                                       aria-controls="curl" aria-selected="true">cURL</a>
                                                 </li>
                                             </ul>
                                             <div class="tab-content" id="myTabContent">
@@ -108,6 +119,7 @@
                                         <div class="col-12">
                                             <hr>
                                             <h6 class="font-weight-bold">Example response:</h6>
+                                            <h6 class="text-green">{{ method.response }}</h6>
                                             <pre class="bg-dark text-light w-100 p-2 rounded">HTTP/1.1 401 Not Authenticated
 {
      "error": "NoAccessRight"

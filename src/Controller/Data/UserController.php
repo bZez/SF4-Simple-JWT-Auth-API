@@ -10,9 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class UserController extends AbstractController
 {
+
     /**
      * @param $id int
      * @return JsonResponse
+     * @api /users/show/:id
+     * @method GET
      * @example Get details of specified user
      */
     public function show($id)
@@ -37,9 +40,31 @@ class UserController extends AbstractController
     }
 
     /**
+     * @return JsonResponse
+     * @api /users/list
+     * @method GET
+     * @example Get a list of user
+     */
+    public function list()
+    {
+        return $this->json([
+            'Users' => [
+                '0' => [
+                    'Name' => 'User 1'
+                ],
+                '1' => [
+                    'Name' => 'User 2'
+                ]
+            ]
+        ]);
+    }
+
+    /**
      * @param $id int
      * @return JsonResponse
-     * @example Get details of specified user
+     * @api /users/edit/:id
+     * @method PUT
+     * @example Edit details of specified user
      */
     public function edit($id)
     {
@@ -63,10 +88,38 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param $firstname string
+     * @param $lastname string
+     * @param $email string
+     * @param $birthdate datetime
      * @return JsonResponse
-     * @example Get details of specified user
+     * @api /users/create
+     * @method POST
+     * @example Create a new user
      */
-    public function list()
+    public function create($firstname, $lastname, $email, $birthdate)
+    {
+        return $this->json([
+            'Users' => [
+                '0' => [
+                    'Name' => 'User 1'
+                ],
+                '1' => [
+                    'Name' => 'User 2'
+                ]
+            ]
+        ]);
+    }
+
+
+    /**
+     * @param $id int
+     * @return JsonResponse
+     * @api /users/delete/:id
+     * @method DELETE
+     * @example Delete specified user
+     */
+    public function delete($id)
     {
         return $this->json([
             'Users' => [

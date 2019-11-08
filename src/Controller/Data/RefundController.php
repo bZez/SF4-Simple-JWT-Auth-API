@@ -15,7 +15,7 @@ class RefundController extends AbstractController
      * @return JsonResponse
      * @api /refunds/show/:id
      * @method GET
-     * @example Get details of specified user
+     * @example Get details of specified refund
      */
     public function show($id)
     {
@@ -42,7 +42,7 @@ class RefundController extends AbstractController
      * @return JsonResponse
      * @api /refunds/list
      * @method GET
-     * @example Get a list of users
+     * @example Get a list of refund
      */
     public function list()
     {
@@ -63,7 +63,7 @@ class RefundController extends AbstractController
      * @return JsonResponse
      * @api /refunds/edit/:id
      * @method PUT
-     * @example Edit details of specified user
+     * @example Edit details of specified refund
      */
     public function edit($id)
     {
@@ -87,16 +87,16 @@ class RefundController extends AbstractController
     }
 
     /**
-     * @param $firstname string
-     * @param $lastname string
-     * @param $email string
-     * @param $birthdate datetime
+     * @param $id int
+     * @param $amount float
+     * @param $date datetime
+     * @param $details [] array
      * @return JsonResponse
      * @api /refunds/create
      * @method POST
      * @example Create a new refund
      */
-    public function create($firstname, $lastname, $email, $birthdate)
+    public function create($id, $amount, $date, $details)
     {
         return $this->json([
             'Users' => [
@@ -116,7 +116,7 @@ class RefundController extends AbstractController
      * @return JsonResponse
      * @api /refunds/delete/:id
      * @method DELETE
-     * @example Delete specified user
+     * @example Delete specified refund
      */
     public function delete($id)
     {

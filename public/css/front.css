@@ -110,7 +110,7 @@ input[type="email"], input[type="text"], input[type="password"] {
     z-index: 99999;
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     background: rgba(255, 255, 255, .8);
 }
 
@@ -121,8 +121,8 @@ input[type="email"], input[type="text"], input[type="password"] {
     position: absolute;
     z-index: 3;
     border: 4px solid #2ee09d;
-    top: 50%;
-    left: 50%;
+    top: calc(50% - 15px);
+    left: calc(50% - 15px);
     animation: loader 2s infinite ease;
 }
 
