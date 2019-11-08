@@ -4,23 +4,122 @@
 
 {% block body %}
     {% for controller in controllers %}
-        <div class="jumbotron">
+        {% set methodId = loop.index %}
+        <div class="container-fluid bg-white rounded p-4 mb-3 shadow-sm">
             <div class="row">
-                <div class="col-6">
-                    <h3>{{ controller.name }}</h3>
-                    <ul>
-                        {% for method in controller.methods %}
-                            <li>{{ method.name|upper }}<br>
-                                {% for comment in method.comments %}
-                                    {{ comment }}<br>
-                                {% endfor %}</li>
+                <div class="col-12">
+                    <h3>/{{ controller.name }}s</h3>
+                    <h6>{{ controller.doc }}</h6>
+                    <hr>
+                    <button class="btn btn btn-primary shadow-none" data-toggle="collapse"
+                            data-target="#method-{{ methodId }}" aria-expanded="false"
+                            aria-controls="method-{{ methodId }}">
+                        <i class="fa fas fa-eye"></i> Show/Hide endpoints
+                    </button>
+                    {% if (controller.name|lower~'s' in app.user.privileges['GET']|keys)
+                        or (controller.name|lower~'s' in app.user.privileges['PUT']|keys)
+                        or (controller.name|lower~'s' in app.user.privileges['POST']|keys)
+                        or (controller.name|lower~'s' in app.user.privileges['DELETE']|keys) %}
+                        <span class="btn btn btn-secondary">
+                            <i class="fa fas fa-check"></i> You have already access right
+                        </span>
+                    {% else %}
+                        <button class="btn btn btn-danger shadow-none">
+                            <i class="fa fas fa-lock"></i> Request access right
+                        </button>
+                    {% endif %}
+                    {% for method in controller.methods %}
+                        <div id="method-{{ methodId }}" class="collapse mt-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>/{{ method.name|upper }} - {{ method.infos }}</h5>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="d-inline-block btn-sm btn-primary btn-{{ method.method }} p-1 rounded font-weight-bold mb-2">{{ method.method }}</span>
+                                    <pre class="bg-dark text-light w-100 p-2 rounded">{{ method.endpoint }}</pre>
+                                    {% if method.params|length > 0 %}
+                                        <h6 class="font-weight-bold">Parameter</h6>
+                                        <div class="row col-12 m-0 section-table-header font-weight-bold border p-1 rounded-top">
+                                            <div class="col-4 border-right">
+                                                Field
+                                            </div>
+                                            <div class="col-2 border-right">
+                                                Type
+                                            </div>
+                                            <div class="col-6">
+                                                Description
+                                            </div>
+                                        </div>
+                                        {% for param in method.params %}
+                                            <div class="row col-12 m-0 p-1 bg-white rounded-bottom border border-top-0 pb-2">
+                                                <div class="col-4 border-right">
+                                                    {{ param.name[1:] }}
+                                                </div>
+                                                <div class="col-2 border-right">
+                                                    {{ param.val }}
+                                                </div>
+                                                <div class="col-6">
+                                                    Description
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <h6 class="font-weight-bold">No parameters required</h6>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <ul class="nav nav-tabs border-0" id="codeTab" role="tablist"
+                                                style="margin-bottom:2px;">
+                                                <li class="nav-item small">
+                                                    <a class="d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
+                                                       id="php-tab" data-toggle="tab" href="#php_{{ loop.index }}"
+                                                       role="tab"
+                                                       aria-controls="php" aria-selected="true">PHP</a>
+                                                </li>
+                                                <li class="nav-item small">
+                                                    <a class="d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
+                                                       id="curl-tab" data-toggle="tab" href="#curl_{{ loop.index }}"
+                                                       role="tab"
+                                                       aria-controls="curl" aria-selected="true">CURL</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="php_{{ loop.index }}"
+                                                     role="tabpanel"
+                                                     aria-labelledby="php-tab">
+                                        <pre class="bg-dark text-light w-100 p-2 rounded">&lt;?php
+    //Example code....
+?>
+</pre>
+                                                </div>
+                                                <div class="tab-pane fade" id="curl_{{ loop.index }}" role="tabpanel"
+                                                     aria-labelledby="curl-tab">
+                                                    <pre class="bg-dark text-light w-100 p-2 rounded">curl -i {{ url('api_front_login') ~ method.endpoint }}</pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr>
+                                            <h6 class="font-weight-bold">Example response:</h6>
+                                            <pre class="bg-dark text-light w-100 p-2 rounded">HTTP/1.1 401 Not Authenticated
+{
+     "error": "NoAccessRight"
+}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
 
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="col-6">
-                    {#                   {{ dump(controller.method.comments) }}#}
-                </div>
             </div>
         </div>
     {% endfor %}

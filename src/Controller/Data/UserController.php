@@ -6,14 +6,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class UserController
- * @package App\Controller\Data
+ * Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
  */
 class UserController extends AbstractController
 {
     /**
-     * @param $id
+     * @param $id int
      * @return JsonResponse
+     * @example Get details of specified user
      */
     public function show($id)
     {
@@ -37,8 +37,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param $id
+     * @param $id int
      * @return JsonResponse
+     * @example Get details of specified user
      */
     public function edit($id)
     {
@@ -63,6 +64,7 @@ class UserController extends AbstractController
 
     /**
      * @return JsonResponse
+     * @example Get details of specified user
      */
     public function list()
     {

@@ -28,11 +28,19 @@ class DataParser
                 $className = explode('.', $fileinfo->getFilename())[0];
                 $c = new ReflectionClass('App\Controller\Data\\' . $className);
                 $this->controllers[$i]['name'] = substr($className, 0, -10);
+                $doc = str_replace('*', '', $c->getDocComment());
+                $doc = str_replace('/', '', $doc);
+                $doc = str_replace('\\', '', $doc);
+                $this->controllers[$i]['doc'] = $doc;
                 foreach ($c->getMethods() as $id => $m) {
                     if ($m->class == $c->name) {
                         $this->controllers[$i]['methods'][] = [
                             'name' => $m->name,
-                            'comments' => $this->parseComments($c, $m)
+                            'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
+                            'method' => $this->parseMethodComments($c, $m)['method'],
+                            'response' => $this->parseMethodComments($c, $m)['response'],
+                            'params' => $this->parseMethodComments($c, $m)['params'],
+                            'infos' => $this->parseMethodComments($c, $m)['infos']
                         ];
                     }
                 }
@@ -48,7 +56,7 @@ class DataParser
         return (substr($haystack, 0, $length) === $needle);
     }
 
-    public function parseComments($c, $m)
+    public function parseMethodComments($c, $m)
     {
         $haystack = $c->getMethod($m->name)->getDocComment();
         $start = "/**       ";
@@ -58,14 +66,41 @@ class DataParser
         $haystack = str_replace('     *', "", $haystack);
         $separator = "\r\n";
         $line = strtok($haystack, $separator);
-        $comments = [];
+        $endpoint = '';
+        $method = '';
+        $response = '';
+        $infos = '';
+        $params = [];
         while (!is_bool($line)) {
             # do something with $line
             $line = strtok($separator);
-            if (is_string($line))
-                $comments[] = $line;
+            if (is_string($line)) {
+                if ($this->startsWith($line, ' @param')) {
+                    $p = explode(' ', str_replace(' @param ', '', $line));
+                    $params[] = ["name" => $p[0], "val" => $p[1]];
+                }
+                if ($this->startsWith($line, ' @api')) {
+                    $endpoint = str_replace(' @api ', '', $line);
+                }
+                if ($this->startsWith($line, ' @return')) {
+                    $response = str_replace(' @return ', '', $line);
+                }
+                if ($this->startsWith($line, ' @method')) {
+                    $method = str_replace(' @method ', '', $line);
+                }
+                if ($this->startsWith($line, ' @example')) {
+                    $infos = str_replace(' @example ', '', $line);
+                }
+            }
         }
-        return $comments;
+        $doc = [
+            'endpoint' => $endpoint,
+            'method' => $method,
+            'response' => $response,
+            'params' => $params,
+            'infos' => $infos
+        ];
+        return $doc;
     }
 
     public function getControllers()

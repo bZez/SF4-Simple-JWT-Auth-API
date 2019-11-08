@@ -102,6 +102,20 @@
     color: #FFB311 !important;
 }
 
+.nav-tabs a, .nav-tabs a:active, .nav-tabs a:focus {
+    color: white !important;
+    outline: none !important;
+    text-decoration: none;
+}
+
+.nav-tabs a:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.code-btn:hover {
+    background: #2EE09D !important;;
+}
 
 /*USER INFO*/
 .user-detail-box {

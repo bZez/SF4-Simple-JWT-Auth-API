@@ -6,7 +6,6 @@ use App\Entity\AuthToken;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use ReallySimpleJWT\Token;
 use ReallySimpleJWT\Token as Tokenizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;

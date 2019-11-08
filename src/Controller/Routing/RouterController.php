@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class RouterController
  * @package App\Controller\Routing
- * @Route("/")
+ * @Route("/", name="api_router")
  */
 class RouterController extends AbstractController
 {

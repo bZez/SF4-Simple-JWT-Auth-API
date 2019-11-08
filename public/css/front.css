@@ -41,6 +41,20 @@ body.logged::after {
     transform-origin: center;
 }
 
+body.logged {
+    overflow-y: auto !important;
+}
+
+body.logged .navbar-top {
+    position: fixed;
+    background: white !important;
+    z-index: 9999;
+}
+
+body.logged #content {
+    padding-top: 86px !important;
+}
+
 input[type="email"], input[type="text"], input[type="password"] {
     background: #A2B7DC !important;
     border: 1px solid #A2B7DC;
@@ -67,6 +81,27 @@ input[type="email"], input[type="text"], input[type="password"] {
 .btn-primary {
     padding: .5rem 1rem !important;
     background-color: #2ee09d !important;
+    color: #FFF !important;
+    border: none !important;
+}
+
+.btn-secondary, .btn-PUT {
+    padding: .5rem 1rem !important;
+    background-color: #FFB311 !important;
+    color: #FFF !important;
+    border: none !important;
+}
+
+.btn-POST {
+    padding: .5rem 1rem !important;
+    background-color: #4070EC !important;
+    color: #FFF !important;
+    border: none !important;
+}
+
+.btn-DELETE {
+    padding: .5rem 1rem !important;
+    background-color: #dc3545 !important;
     color: #FFF !important;
     border: none !important;
 }

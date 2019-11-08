@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use \ReflectionException;
+use ReallySimpleJWT\Token as Tokenizer;
 
 /**
  * Class ApiFrontController
@@ -48,34 +49,7 @@ class ApiFrontController extends AbstractController
         $parser = new DataParser($kernel);
         $controllers = $parser->getControllers();
         return $this->render('front/data.html.twig', [
-            'controllers' => $controllers
+            'controllers' => $controllers,
         ]);
-    }
-
-    public function generateRemotingApi()
-    {
-
-        $list = array();
-        foreach ($this->remotingBundles as $bundle) {
-            $bundleRef = new \ReflectionClass($bundle);
-            $controllerDir = new Finder();
-            $controllerDir->files()->in(dirname($bundleRef->getFileName()) . '/Controller/')->name('/.*Controller\\.php$/');
-            foreach ($controllerDir as $controllerFile) {
-                /** @var SplFileInfo $controllerFile */
-                $controller = $bundleRef->getNamespaceName() . "\\Controller\\" . substr($controllerFile->getFilename(), 0, -4);
-                $controllerRef = new \ReflectionClass($controller);
-                foreach ($controllerRef->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                    /** @var $methodDirectAnnotation Direct */
-                    $methodDirectAnnotation = $this->annoReader->getMethodAnnotation($method, 'Tpg\\ExtjsBundle\\Annotation\\Direct');
-                    if ($methodDirectAnnotation !== null) {
-                        $nameSpace = str_replace("\\", ".", $bundleRef->getNamespaceName());
-                        $className = str_replace("Controller", "", $controllerRef->getShortName());
-                        $methodName = str_replace("Action", "", $method->getName());
-                        $list[$nameSpace][$className][] = array('name' => $methodName, 'len' => count($method->getParameters()));
-                    }
-                }
-            }
-        }
-        return $list;
     }
 }
