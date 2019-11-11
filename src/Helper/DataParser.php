@@ -16,6 +16,7 @@ class DataParser
      * DataParser constructor.
      * @param KernelInterface $kernel
      * @throws ReflectionException
+     * @author  Sam BZEZ <sam@bzez.dev>
      */
     public function __construct($kernel)
     {

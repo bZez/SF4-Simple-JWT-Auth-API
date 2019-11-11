@@ -34,7 +34,7 @@ class ApiFrontController extends AbstractController
      */
     public function users(UserRepository $repository)
     {
-        $users = $repository->findAll();
+        $users = $repository->findBy(['partner' => $this->getUser()->getPartner()]);
         return $this->render('front/users.html.twig', [
             'users' => $users
         ]);

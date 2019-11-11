@@ -31,7 +31,8 @@
                             <div class="col-2 p-0 border-right text-green text-truncate">
                                 <input type="checkbox"> {{ user.lastName|upper }} {{ user.firstName|capitalize }}
                             </div>
-                            <div class="col-2 border-right text-truncate">MGEL</div>
+                            {#TODO PARTNER PAGE VIEW#}
+                            <div class="col-2 border-right text-truncate">{{ user.partner.name|upper }}</div>
                             <div class="col-2 border-right text-truncate">{{ user.email }}</div>
                             <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
                             <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>

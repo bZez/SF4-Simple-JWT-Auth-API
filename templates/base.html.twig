@@ -48,6 +48,14 @@
             $(".loader").delay(500).fadeOut('slow');
             $("#overlayer").delay(500).fadeOut('slow');
         }));
+
+        function copyToClipboard() {
+            var copyText = document.getElementById("access-token");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            /*For mobile devices*/
+            document.execCommand("copy");
+        }
     </script>
 {% endif %}
 {% block javascripts %}{% endblock %}

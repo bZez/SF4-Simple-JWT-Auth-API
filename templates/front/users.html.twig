@@ -6,10 +6,17 @@
     <div class="row bg-white" style="height: calc(100vh - 86px)">
         <div class="col-2 border">Left</div>
         <div class="col-10 border" id="size">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-12 pl-5 p-4 section-header shadow-sm">
-                    <h3 class="section-h3">Users</h3>
-                    <span>All</span>
+                    <div class="float-left">
+                        <h3 class="section-h3">Users</h3>
+                        <span>All</span>
+                    </div>
+                    <div class="float-right">
+                        <h3 {{ path('api_front_logout') }} class="btn btn btn-primary shadow-none" id="btn-logout">
+                            <i class="fas fa-plus"></i> &nbsp; Add
+                        </h3>
+                    </div>
                 </div>
                 <div class="row w-100 m-0 pl-5 pr-3 p-2 section-table-header border-bottom">
                     <div class="col-2 p-0 border-right text-truncate"><input type="checkbox" id="checkAll"> NAME</div>
@@ -27,14 +34,14 @@
                         {% set generateAccess = "<button onclick='generateAccess("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
         </a>" %}
-                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-0 border-bottom align-items-center user-result-row">
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row">
                             <div class="col-2 p-0 border-right text-green text-truncate">
                                 <input type="checkbox"> {{ user.lastName|upper }} {{ user.firstName|capitalize }}
                             </div>
                             <div class="col-2 border-right text-truncate">MGEL</div>
                             <div class="col-2 border-right text-truncate">{{ user.email }}</div>
                             <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
-                            <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
+                            <div class="col-3 border-right text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
                         </div>
                     {% endfor %}
                 </div>

@@ -44,14 +44,15 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $privileges = [];
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\AuthToken")
      */
     private $authToken;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partner", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $partner;
 
     public function getId(): ?int
     {
@@ -164,18 +165,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getPrivileges(): ?array
-    {
-        return $this->privileges;
-    }
-
-    public function setPrivileges(array $privileges): self
-    {
-        $this->privileges = $privileges;
-
-        return $this;
-    }
-
     /**
      * @return AuthToken
      */
@@ -186,6 +175,18 @@ class User implements UserInterface
     public function setAuthToken($authToken): self
     {
         $this->authToken = $authToken;
+
+        return $this;
+    }
+
+    public function getPartner(): ?Partner
+    {
+        return $this->partner;
+    }
+
+    public function setPartner(?Partner $partner): self
+    {
+        $this->partner = $partner;
 
         return $this;
     }

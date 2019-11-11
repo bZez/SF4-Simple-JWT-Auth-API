@@ -60,7 +60,7 @@ class AccessToken
                 ->setExpiration($exp)
                 ->setIssuedAt(time())
                 ->setJwtId(md5(uniqid('TOKEN')))
-                ->setPayloadClaim('privileges', $auth->getUser()->getPrivileges())
+                ->setPayloadClaim('privileges', $auth->getUser()->getPartner()->getPrivileges())
                 ->build();
         } catch (Exception $e) {
             die("Build error...");
