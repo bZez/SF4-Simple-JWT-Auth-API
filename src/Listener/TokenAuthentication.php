@@ -32,6 +32,23 @@ class TokenAuthentication extends AbstractController
     }
 
     /**
+     * @Catch ALL request except login.
+     */
+    public function onKernelRequest()
+    {
+        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/')
+            && (!$this->startsWith($this->endpoint, '/_'))
+            && (!$this->startsWith($this->endpoint, '/~'))) {
+            try {
+                $this->checkToken();
+                $this->checkPrivileges();
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+    }
+
+    /**
      * @param $haystack
      * @param $needle
      * @return bool
@@ -41,7 +58,6 @@ class TokenAuthentication extends AbstractController
         $length = strlen($needle);
         return (substr($haystack, 0, $length) === $needle);
     }
-
 
     /**
      * @Check Token
@@ -98,23 +114,6 @@ class TokenAuthentication extends AbstractController
             }
         } else {
             throw new Exception('Forbidden access...', 000005);
-        }
-    }
-
-    /**
-     * @Catch ALL request except login.
-     */
-    public function onKernelRequest()
-    {
-        if (($this->endpoint !== '/auth/login') && ($this->endpoint !== '/')
-            && (!$this->startsWith($this->endpoint, '/_'))
-            && (!$this->startsWith($this->endpoint, '/~'))) {
-            try {
-                $this->checkToken();
-                $this->checkPrivileges();
-            } catch (Exception $e) {
-                die($e->getMessage());
-            }
         }
     }
 }

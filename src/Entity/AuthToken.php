@@ -102,18 +102,6 @@ class AuthToken
         return $this;
     }
 
-    public function getValue(): ?string
-    {
-        return $this->value;
-    }
-
-    public function setValue(string $value): self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
     public function getCreation(): ?DateTimeInterface
     {
         return $this->creation;
@@ -122,18 +110,6 @@ class AuthToken
     public function setCreation(DateTimeInterface $creation): self
     {
         $this->creation = $creation;
-
-        return $this;
-    }
-
-    public function getExpiration(): ?DateTimeInterface
-    {
-        return $this->expiration;
-    }
-
-    public function setExpiration(DateTimeInterface $expiration): self
-    {
-        $this->expiration = $expiration;
 
         return $this;
     }
@@ -162,6 +138,30 @@ class AuthToken
             throw new Exception('Invalid or modified token...', 000004);
         return true;
 
+    }
+
+    public function getExpiration(): ?DateTimeInterface
+    {
+        return $this->expiration;
+    }
+
+    public function setExpiration(DateTimeInterface $expiration): self
+    {
+        $this->expiration = $expiration;
+
+        return $this;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(string $value): self
+    {
+        $this->value = $value;
+
+        return $this;
     }
 
     /**

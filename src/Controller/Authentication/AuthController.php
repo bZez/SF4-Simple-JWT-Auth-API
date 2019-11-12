@@ -39,31 +39,11 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @param User $user
-     * @return string|null
-     * @Route("/_secure/generate/auth/{user}",name="api_back_generate_auth")
-     */
-    public function generateAuthToken(User $user)
-    {
-        if ($user->getAuthToken()) {
-            $token = $user->getAuthToken();
-            return $this->json([$token->getValue()]);
-        } else {
-            $token = new AuthToken($user);
-        }
-        $user->setAuthToken($token);
-        $this->em->persist($token);
-        $this->em->persist($user);
-        $this->em->flush();
-        return $token->getValue();
-    }
-
-    /**
      * @Route("/auth/login", name="api_get_auth",methods={"GET"})
      * @param UserRepository $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return JsonResponse
-     *@throws Exception
+     * @throws Exception
      */
     public function authenticate(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -94,6 +74,26 @@ class AuthController extends AbstractController
         } else {
             return $this->json(['Error' => 'You must login to access API...'], 500);
         }
+    }
+
+    /**
+     * @param User $user
+     * @return string|null
+     * @Route("/~private/generate/auth/{user}",name="api_back_generate_auth")
+     */
+    public function generateAuthToken(User $user)
+    {
+        if ($user->getAuthToken()) {
+            $token = $user->getAuthToken();
+            return $this->json([$token->getValue()]);
+        } else {
+            $token = new AuthToken($user);
+        }
+        $user->setAuthToken($token);
+        $this->em->persist($token);
+        $this->em->persist($user);
+        $this->em->flush();
+        return $this->json([$token->getValue()]);
     }
 
     /**

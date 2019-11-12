@@ -87,7 +87,6 @@ class RefundController extends AbstractController
     }
 
     /**
-     * @param $id int
      * @param $amount float
      * @param $date datetime
      * @param $details [] array
@@ -96,7 +95,7 @@ class RefundController extends AbstractController
      * @method POST
      * @example Create a new refund
      */
-    public function create($id, $amount, $date, $details)
+    public function create($amount, $date, $details)
     {
         return $this->json([
             'Users' => [

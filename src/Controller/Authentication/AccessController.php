@@ -33,7 +33,7 @@ class AccessController extends AbstractController
     /**
      * @param User $user
      * @return String Token
-     * @Route("/_secure/generate/access/{user}",name="api_back_generate_access")
+     * @Route("/~private/generate/access/{user}",name="api_back_generate_access")
      */
     public function generateAccessToken(User $user)
     {

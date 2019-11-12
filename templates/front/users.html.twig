@@ -13,9 +13,10 @@
                         <span>All</span>
                     </div>
                     <div class="float-right">
-                        <h3 {{ path('api_front_logout') }} class="btn btn btn-primary shadow-none" id="btn-logout">
+                        <button {{ path('api_front_logout') }} class="btn btn btn-primary shadow-none"
+                                                               data-toggle="modal" data-target="#createUserModal">
                             <i class="fas fa-plus"></i> &nbsp; Add
-                        </h3>
+                        </button>
                     </div>
                 </div>
                 <div class="row w-100 m-0 pl-5 pr-3 p-2 section-table-header border-bottom">
@@ -38,12 +39,13 @@
                             <div class="col-2 p-0 border-right text-green text-truncate">
                                 <input type="checkbox"> {{ user.lastName|upper }} {{ user.firstName|capitalize }}
                             </div>
-                            <div class="col-2 border-right text-truncate">MGEL</div>
+                            <div class="col-2 border-right text-truncate">{{ user.partner.name|upper }}</div>
                             <div class="col-2 border-right text-truncate">{{ user.email }}</div>
                             <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
                             <div class="col-3 border-right text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
                         </div>
                     {% endfor %}
+                    {% include 'front/users/add.html.twig' %}
                 </div>
             </div>
         </div>

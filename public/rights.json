@@ -1,6 +1,9 @@
 {
   "GET": {
-    "users": ["show","list"]
+    "users": [
+      "show",
+      "list"
+    ]
   },
   "POST": {},
   "PUT": {},

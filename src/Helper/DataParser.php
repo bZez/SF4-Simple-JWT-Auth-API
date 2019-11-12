@@ -51,12 +51,6 @@ class DataParser
         }
     }
 
-    function startsWith($haystack, $needle)
-    {
-        $length = strlen($needle);
-        return (substr($haystack, 0, $length) === $needle);
-    }
-
     public function parseMethodComments($c, $m)
     {
         $haystack = $c->getMethod($m->name)->getDocComment();
@@ -102,6 +96,12 @@ class DataParser
             'infos' => $infos
         ];
         return $doc;
+    }
+
+    function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
     }
 
     public function getControllers()
