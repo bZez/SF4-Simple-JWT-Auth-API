@@ -13,7 +13,7 @@ class RefundController extends AbstractController
     /**
      * @param $id int
      * @return JsonResponse
-     * @api /refunds/show/:id
+     * @api /refunds/:id
      * @method GET
      * @example Get details of specified refund
      */

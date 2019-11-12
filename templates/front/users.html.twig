@@ -52,18 +52,6 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        function generateAuth(id, e) {
-            $.get("generate/auth/" + id, function (data) {
-                e.parent().html(data)
-            });
-        }
-
-        function generateAccess(id, e) {
-            $.get("generate/access/" + id, function (data) {
-                e.parent().html(data)
-            });
-        }
-
         size = $(window).innerHeight();
         full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
         nav = $('.navbar').innerHeight();

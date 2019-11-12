@@ -14,7 +14,7 @@ class UserController extends AbstractController
     /**
      * @param $id int
      * @return JsonResponse
-     * @api /users/show/:id
+     * @api /users/:id
      * @method GET
      * @example Get details of specified user
      */

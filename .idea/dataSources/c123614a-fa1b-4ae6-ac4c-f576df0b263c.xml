@@ -924,202 +924,267 @@
       <Engine>InnoDB</Engine>
       <Collation>utf8mb4_unicode_ci</Collation>
     </table>
-    <table id="232" parent="2" name="user">
+    <table id="232" parent="2" name="partner">
       <Engine>InnoDB</Engine>
       <Collation>utf8mb4_unicode_ci</Collation>
     </table>
-    <column id="233" parent="229" name="id">
+    <table id="233" parent="2" name="user">
+      <Engine>InnoDB</Engine>
+      <Collation>utf8mb4_unicode_ci</Collation>
+    </table>
+    <column id="234" parent="229" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="234" parent="229" name="auth_token_id">
+    <column id="235" parent="229" name="auth_token_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="235" parent="229" name="value">
+    <column id="236" parent="229" name="value">
       <Position>3</Position>
       <DataType>varchar(4096)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="229" name="creation">
+    <column id="237" parent="229" name="creation">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="229" name="expiration">
+    <column id="238" parent="229" name="expiration">
       <Position>5</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="238" parent="229" name="UNIQ_B6A2DD686524603F">
+    <index id="239" parent="229" name="UNIQ_B6A2DD686524603F">
       <ColNames>auth_token_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="239" parent="229" name="PRIMARY">
+    <key id="240" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="240" parent="229" name="UNIQ_B6A2DD686524603F">
+    <key id="241" parent="229" name="UNIQ_B6A2DD686524603F">
       <ColNames>auth_token_id</ColNames>
       <UnderlyingIndexName>UNIQ_B6A2DD686524603F</UnderlyingIndexName>
     </key>
-    <foreign-key id="241" parent="229" name="FK_B6A2DD686524603F">
+    <foreign-key id="242" parent="229" name="FK_B6A2DD686524603F">
       <ColNames>auth_token_id</ColNames>
       <RefSchemaName>api</RefSchemaName>
       <RefTableName>auth_token</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="242" parent="230" name="id">
+    <column id="243" parent="230" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="230" name="user_id">
+    <column id="244" parent="230" name="user_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="230" name="value">
+    <column id="245" parent="230" name="value">
       <Position>3</Position>
       <DataType>varchar(4096)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="230" name="creation">
+    <column id="246" parent="230" name="creation">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="230" name="expiration">
+    <column id="247" parent="230" name="expiration">
       <Position>5</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="230" name="ip">
+    <column id="248" parent="230" name="ip">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="230" name="access_token_id">
+    <column id="249" parent="230" name="access_token_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="249" parent="230" name="UNIQ_9315F04EA76ED395">
+    <index id="250" parent="230" name="UNIQ_9315F04EA76ED395">
       <ColNames>user_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="250" parent="230" name="PRIMARY">
+    <index id="251" parent="230" name="UNIQ_9315F04E2CCB2688">
+      <ColNames>access_token_id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="252" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="251" parent="230" name="UNIQ_9315F04EA76ED395">
+    <key id="253" parent="230" name="UNIQ_9315F04EA76ED395">
       <ColNames>user_id</ColNames>
       <UnderlyingIndexName>UNIQ_9315F04EA76ED395</UnderlyingIndexName>
     </key>
-    <foreign-key id="252" parent="230" name="FK_9315F04EA76ED395">
+    <key id="254" parent="230" name="UNIQ_9315F04E2CCB2688">
+      <ColNames>access_token_id</ColNames>
+      <UnderlyingIndexName>UNIQ_9315F04E2CCB2688</UnderlyingIndexName>
+    </key>
+    <foreign-key id="255" parent="230" name="FK_9315F04EA76ED395">
       <ColNames>user_id</ColNames>
       <RefSchemaName>api</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="253" parent="231" name="version">
+    <foreign-key id="256" parent="230" name="FK_9315F04E2CCB2688">
+      <ColNames>access_token_id</ColNames>
+      <RefSchemaName>api</RefSchemaName>
+      <RefTableName>access_token</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="257" parent="231" name="version">
       <Position>1</Position>
       <DataType>varchar(14)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="231" name="executed_at">
+    <column id="258" parent="231" name="executed_at">
       <Position>2</Position>
       <Comment>(DC2Type:datetime_immutable)</Comment>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="255" parent="231" name="PRIMARY">
+    <key id="259" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>version</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="256" parent="232" name="id">
+    <column id="260" parent="232" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="232" name="auth_token_id">
+    <column id="261" parent="232" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="262" parent="232" name="privileges">
+      <Position>3</Position>
+      <DataType>json|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="263" parent="232" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="264" parent="233" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="265" parent="233" name="auth_token_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="232" name="email">
+    <column id="266" parent="233" name="email">
       <Position>3</Position>
       <DataType>varchar(180)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="259" parent="232" name="roles">
+    <column id="267" parent="233" name="roles">
       <Position>4</Position>
       <DataType>json|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="232" name="password">
+    <column id="268" parent="233" name="password">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="232" name="privileges">
+    <column id="269" parent="233" name="first_name">
       <Position>6</Position>
-      <DataType>json|0s</DataType>
+      <DataType>varchar(180)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="262" parent="232" name="UNIQ_8D93D6496524603F">
+    <column id="270" parent="233" name="last_name">
+      <Position>7</Position>
+      <DataType>varchar(180)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="271" parent="233" name="partner_id">
+      <Position>8</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="272" parent="233" name="UNIQ_8D93D6496524603F">
       <ColNames>auth_token_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="263" parent="232" name="UNIQ_8D93D649E7927C74">
+    <index id="273" parent="233" name="UNIQ_8D93D649E7927C74">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="264" parent="232" name="PRIMARY">
+    <index id="274" parent="233" name="IDX_8D93D6499393F8FE">
+      <ColNames>partner_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="275" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="265" parent="232" name="UNIQ_8D93D6496524603F">
+    <key id="276" parent="233" name="UNIQ_8D93D6496524603F">
       <ColNames>auth_token_id</ColNames>
       <UnderlyingIndexName>UNIQ_8D93D6496524603F</UnderlyingIndexName>
     </key>
-    <key id="266" parent="232" name="UNIQ_8D93D649E7927C74">
+    <key id="277" parent="233" name="UNIQ_8D93D649E7927C74">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>UNIQ_8D93D649E7927C74</UnderlyingIndexName>
     </key>
-    <foreign-key id="267" parent="232" name="FK_8D93D6496524603F">
+    <foreign-key id="278" parent="233" name="FK_8D93D6496524603F">
       <ColNames>auth_token_id</ColNames>
       <RefSchemaName>api</RefSchemaName>
       <RefTableName>auth_token</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="279" parent="233" name="FK_8D93D6499393F8FE">
+      <ColNames>partner_id</ColNames>
+      <RefSchemaName>api</RefSchemaName>
+      <RefTableName>partner</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
   </database-model>

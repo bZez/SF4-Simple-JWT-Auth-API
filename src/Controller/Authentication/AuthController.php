@@ -55,7 +55,7 @@ class AuthController extends AbstractController
         $this->em->persist($token);
         $this->em->persist($user);
         $this->em->flush();
-        return $this->json([$token->getValue()]);
+        return $token->getValue();
     }
 
     /**
@@ -83,7 +83,7 @@ class AuthController extends AbstractController
                             return $this->json(['Error' => $e->getMessage()]);
                         }
                     } else {
-                        return $this->json(['token' => $this->generateAuthToken($user)]);
+                        return $this->json(['authToken' => $this->generateAuthToken($user)]);
                     }
                 } else {
                     return $this->json(['Error' => "Invalid credentials...."], 500);

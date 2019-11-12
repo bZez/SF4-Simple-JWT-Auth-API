@@ -3,132 +3,9 @@
 {% block title %}Data access{% endblock %}
 
 {% block body %}
-    <div class="container-fluid bg-white rounded p-4 mb-3 shadow-sm">
-        <div class="row">
-            <div class="col-12">
-                <h3>Authentication</h3>
-                <h6>Authentication method</h6>
-                <hr>
-                {#<button class="btn btn btn-primary shadow-none mb-3 mb-md-0 col-md-3 col-sm-12 m-0"
-                        data-toggle="collapse"
-                        data-target="#method-{{ methodId }}" aria-expanded="false"
-                        aria-controls="method-{{ methodId }}">
-                    <i class="fa fas fa-eye"></i> Show/Hide endpoints
-                </button>#}
-                <span class="btn btn btn-secondary col-md-3 col-sm-12 m-0">
-                            <i class="fa fas fa-check"></i> You have access right
-                        </span>
-                <div class="input-group col-12 pl-0 pr-0 mt-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3"><small
-                                    class="font-weight-bold">Access Token</small></span>
-                    </div>
-                    <input type="text" class="form-control m-0 h-100 shadow-none" id="access-token"
-                           aria-describedby="basic-addon3" value="{{ app.user.authToken.value }}">
-                    <div class="input-group-append" onclick="copyToClipboard()">
-                        <span class="input-group-text"><i class="fa fa fa-copy"></i></span>
-                    </div>
-                </div>
-                <div id="method-{{ app.user.id }}" class="collapse mt-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5>Auth</h5>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <span class="d-inline-block btn-sm btn-primary btn-GET p-1 rounded font-weight-bold mb-2">GET</span>
-                            <pre class="bg-dark text-light w-100 p-2 rounded">endpoint</pre>
-
-                            <h6 class="font-weight-bold">Parameter</h6>
-                            <div class="row col-12 m-0 section-table-header font-weight-bold border p-1 rounded-top">
-                                <div class="col-4 border-right">
-                                    Field
-                                </div>
-                                <div class="col-2 border-right">
-                                    Type
-                                </div>
-                                <div class="col-6">
-                                    Description
-                                </div>
-                            </div>
-                            <div class="row col-12 m-0 p-1 bg-white rounded-bottom border border-top-0 pb-2">
-                                <div class="col-4 border-right">
-                                    params name
-                                </div>
-                                <div class="col-2 border-right">
-                                    param val
-                                </div>
-                                <div class="col-6">
-                                    Description
-                                </div>
-                            </div>
-                            <h6 class="font-weight-bold">No parameters required</h6>
-                        </div>
-                        <div class="col-sm-12 col-md-6 mt-3 mt-md-0">
-                            <div class="row">
-                                <div class="col-12">
-                                    <ul class="nav nav-tabs border-0" id="codeTab" role="tablist"
-                                        style="margin-bottom:2px;">
-                                        <li class="nav-item small w-50">
-                                            <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
-                                               id="php-tab" data-toggle="tab" href="#php_auth"
-                                               role="tab"
-                                               aria-controls="php" aria-selected="true">PHP</a>
-                                        </li>
-                                        <li class="nav-item small w-50">
-                                            <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
-                                               id="curl-tab" data-toggle="tab" href="#curl_auth"
-                                               role="tab"
-                                               aria-controls="curl" aria-selected="true">cURL</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="php_auth"
-                                             role="tabpanel"
-                                             aria-labelledby="php-tab">
-                                        <pre class="bg-dark text-light w-100 p-2 rounded">$API_PUBLIC_KEY = "";
-$API_PRIVATE_KEY = "";
-$opts = [
-'http' => [
-'method' => "GET",
-'header' => "API-Authorization: $API_PUBLIC_KEY\r\n" .
-"ACCESS-Authorization: $API_PRIVATE_KEY\r\n"
-]
-];
-$context = stream_context_create($opts);
-$endpoint = file_get_contents('http://api.jwt/users/list', false, $context);
-$response = json_decode($endpoint);
-
-return new JsonResponse($response);</pre>
-                                        </div>
-                                        <div class="tab-pane fade" id="curl_auth" role="tabpanel"
-                                             aria-labelledby="curl-tab">
-                                            <pre class="bg-dark text-light w-100 p-2 rounded">curl -i {{ url('api_front_login') }}</pre>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <hr>
-                                    <h6 class="font-weight-bold">Example response:</h6>
-                                    <h6 class="text-green">response</h6>
-                                    <pre class="bg-dark text-light w-100 p-2 rounded">HTTP/1.1 401 Not Authenticated
-{
-     "error": "NoAccessRight"
-}</pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
+    {# START - STATIC EXAMPLE OF AUTHENTICATION #}
+    {% include 'front/authpage.html.twig' %}
+    {# END - STATIC EXAMPLE OF AUTHENTICATION #}
     {% for controller in controllers %}
         {% set methodId = loop.index %}
         <div class="container-fluid bg-white rounded p-4 mb-3 shadow-sm">
@@ -143,10 +20,10 @@ return new JsonResponse($response);</pre>
                             aria-controls="method-{{ methodId }}">
                         <i class="fa fas fa-eye"></i> Show/Hide endpoints
                     </button>
-                    {% if (controller.name|lower~'s' in app.user.privileges['GET']|keys)
-                        or (controller.name|lower~'s' in app.user.privileges['PUT']|keys)
-                        or (controller.name|lower~'s' in app.user.privileges['POST']|keys)
-                        or (controller.name|lower~'s' in app.user.privileges['DELETE']|keys) %}
+                    {% if (controller.name|lower~'s' in app.user.partner.privileges['GET']|keys)
+                        or (controller.name|lower~'s' in app.user.partner.privileges['PUT']|keys)
+                        or (controller.name|lower~'s' in app.user.partner.privileges['POST']|keys)
+                        or (controller.name|lower~'s' in app.user.partner.privileges['DELETE']|keys) %}
                         <span class="btn btn btn-secondary col-md-3 col-sm-12 m-0">
                             <i class="fa fas fa-check"></i> You have access right
                         </span>
@@ -154,9 +31,10 @@ return new JsonResponse($response);</pre>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3"><small class="font-weight-bold">Access Token</small></span>
                             </div>
-                            <input type="text" class="form-control m-0 h-100 shadow-none" id="access-token"
+                            <input type="text" class="form-control m-0 h-100 shadow-none"
+                                   id="access-token-{{ loop.index }}"
                                    aria-describedby="basic-addon3" value="{{ app.user.authToken.accessToken.value }}">
-                            <div class="input-group-append" onclick="copyToClipboard()">
+                            <div class="input-group-append" onclick="copyToClipboard('access-token-{{ loop.index }}')">
                                 <span class="input-group-text"><i class="fa fa fa-copy"></i></span>
                             </div>
                         </div>
@@ -210,33 +88,77 @@ return new JsonResponse($response);</pre>
                                 <div class="col-sm-12 col-md-6 mt-3 mt-md-0">
                                     <div class="row">
                                         <div class="col-12">
-                                            <ul class="nav nav-tabs border-0" id="codeTab" role="tablist"
-                                                style="margin-bottom:2px;">
+                                            <ul class="nav nav-tabs border-0"
+                                                id="codeTab-{{ methodId }}-{{ loop.index }}"
+                                                role="tablist"
+                                                style="margin-bottom:-7px;">
                                                 <li class="nav-item small w-50">
                                                     <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
-                                                       id="php-tab" data-toggle="tab" href="#php_{{ loop.index }}"
+                                                       id="php-tab_{{ methodId }}-{{ loop.index }}" data-toggle="tab"
+                                                       href="#php_{{ methodId }}-{{ loop.index }}"
                                                        role="tab"
-                                                       aria-controls="php" aria-selected="true">PHP</a>
+                                                       aria-controls="php_{{ methodId }}-{{ loop.index }}"
+                                                       aria-selected="true">PHP</a>
                                                 </li>
                                                 <li class="nav-item small w-50">
                                                     <a class="w-100 text-center d-inline-block shadow-none btn-secondary code-btn p-1 rounded font-weight-bold mb-1"
-                                                       id="curl-tab" data-toggle="tab" href="#curl_{{ loop.index }}"
+                                                       id="curl-tab_{{ methodId }}-{{ loop.index }}" data-toggle="tab"
+                                                       href="#curl_{{ methodId }}-{{ loop.index }}"
                                                        role="tab"
-                                                       aria-controls="curl" aria-selected="true">cURL</a>
+                                                       aria-controls="curl_{{ methodId }}-{{ loop.index }}"
+                                                       aria-selected="true">cURL</a>
                                                 </li>
                                             </ul>
-                                            <div class="tab-content" id="myTabContent">
-                                                <div class="tab-pane fade show active" id="php_{{ loop.index }}"
+                                            <div class="tab-content" id="code_{{ methodId }}-{{ loop.index }}">
+                                                <div class="tab-pane fade show active"
+                                                     id="php_{{ methodId }}-{{ loop.index }}"
                                                      role="tabpanel"
-                                                     aria-labelledby="php-tab">
-                                        <pre class="bg-dark text-light w-100 p-2 rounded">&lt;?php
-    //Example code....
-?>
-</pre>
+                                                     aria-labelledby="php_{{ methodId }}-{{ loop.index }}">
+                                        <pre class="bg-dark text-light w-100 p-2 rounded"><code class="language-php">&lt;?php
+    $API_AUTH_TOKEN = ""; //Your API AUTH TOKEN
+    $API_ACCESS_TOKEN = ""; //Your API ACCESS Token
+    {% if method.method is same as('PUT') %}
+        // Create map with request parameters
+        $params = array ('name' => 'John', 'lastname' => 'Doe');
+        // Build Http query using params
+        $query = http_build_query ($params);
+    {% endif %}
+$opts = [
+        'http' => [
+        'method' => "{{ method.method }}",
+        'header' => "API-Authorization: $API_AUTH_KEY\r\n" .
+                    "ACCESS-Authorization: $API_ACCESS_KEY\r\n"{% if method.method is same as('PUT') %}.
+                    "Content-Length: ".strlen($query)."\r\n",
+        'content' => $query
+        {% endif %}
+          ]
+         ];
+    $context = stream_context_create($opts);
+    $endpoint = file_get_contents('{{ url('api_front_login') }}{{ method.endpoint[1:] }}', false, $context);
+
+    $response = json_decode($endpoint);
+?></code></pre>
                                                 </div>
-                                                <div class="tab-pane fade" id="curl_{{ loop.index }}" role="tabpanel"
-                                                     aria-labelledby="curl-tab">
-                                                    <pre class="bg-dark text-light w-100 p-2 rounded">curl -i {{ url('api_front_login') ~ method.endpoint }}</pre>
+                                                <div class="tab-pane fade" id="curl_{{ methodId }}-{{ loop.index }}"
+                                                     role="tabpanel"
+                                                     aria-labelledby="curl_{{ methodId }}-{{ loop.index }}">
+                                                    <pre class="bg-dark text-light w-100 p-2 rounded language-bash"><code
+                                                                class="language-bash">#Send Authentication
+$API_PUBLIC_KEY = ""; #Your API AUTH TOKEN
+$API_PRIVATE_KEY = ""; #Your API ACCESS Token
+curl -X {{ method.method }} \
+  {{ url('api_front_login') }}{{ method.endpoint[1:] }} \
+  -H "API-Authorization: $API_PUBLIC_KEY" \
+  -H "ACCESS-Authorization: $API_PRIVATE_KEY" \
+  -H "Content-type: application/json" \
+{% if method.method is same as('PUT') %}
+    #JSON Array of datas you want to update
+    -d '{
+    "name":"John Doe",
+    "email":"abc@xyz.com"
+    }'
+{% endif %}
+</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,10 +168,29 @@ return new JsonResponse($response);</pre>
                                             <hr>
                                             <h6 class="font-weight-bold">Example response:</h6>
                                             <h6 class="text-green">{{ method.response }}</h6>
-                                            <pre class="bg-dark text-light w-100 p-2 rounded">HTTP/1.1 401 Not Authenticated
-{
-     "error": "NoAccessRight"
-}</pre>
+                                            <pre class="bg-dark text-light w-100 p-2 rounded"><code
+                                                        class="language-json">HTTP/1.1 200 OK
+{% if method.name is same as('list') %}
+    {
+    "{{ controller.name~'s' }}": [
+    {
+    "Name": "{{ controller.name }} 1"
+    },
+    {
+    "Name": "{{ controller.name }} 2"
+    }
+    ]
+    }
+{% else %}
+    {
+    "{{ controller.name~'s' }}": {
+    "1":
+    {
+    "Name": "{{ controller.name }} 1"
+    }
+    }
+    }
+{% endif %}</code></pre>
                                         </div>
                                     </div>
                                 </div>
