@@ -37,9 +37,9 @@ class ApiFrontController extends AbstractController
      * @param UserRepository $repository
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
-     * @Route("/users",name="api_front_users")
+     * @Route("/users",name="api_front_user")
      */
-    public function users(Request $request, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder)
+    public function user(Request $request, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         $createForm = $this->createForm(UserCreationType::class, $user);
@@ -57,9 +57,9 @@ class ApiFrontController extends AbstractController
             $em->flush();
 
             $this->addFlash('notice', 'User successfully created !');
-            return $this->redirectToRoute('api_front_users');
+            return $this->redirectToRoute('api_front_user');
         }
-        return $this->render('front/users.html.twig', [
+        return $this->render('front/user.html.twig', [
             'users' => $users,
             'createForm' => $createForm->createView()
         ]);
@@ -69,9 +69,9 @@ class ApiFrontController extends AbstractController
      * @param KernelInterface $kernel
      * @return Response
      * @throws ReflectionException
-     * @Route("/datas",name="api_front_datas")
+     * @Route("/datas",name="api_front_data")
      */
-    public function datas(KernelInterface $kernel)
+    public function data(KernelInterface $kernel)
     {
         $parser = new DataParser($kernel);
         $controllers = $parser->getControllers();

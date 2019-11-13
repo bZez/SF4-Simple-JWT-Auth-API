@@ -1,0 +1,21 @@
+<code class="language-json">HTTP/1.1 200 OK
+{% if method.name is same as('list') %}
+{
+    "{{ controller.name~'s' }}": [
+        {
+        "Name": "{{ controller.name }} 1"
+        },
+        {
+        "Name": "{{ controller.name }} 2"
+        }
+    ]
+}
+    {% else %}
+{
+    "{{ controller.name~'s' }}": {
+        "1":
+        {
+        "Name": "{{ controller.name }} 1"
+        }
+    }
+}{% endif %}</code>

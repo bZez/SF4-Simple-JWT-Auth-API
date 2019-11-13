@@ -24,7 +24,7 @@
                         {% set generateAuth = "<button onclick='generateAuth("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate authentication token for user
         </a>" %}
-                        {% set generateAccess = "<button onclick='generateAccess("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+                        {% set generateAccess = "<button onclick='generateAccess("~ app.user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
         </a>" %}
                         <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-0 border-bottom align-items-center user-result-row">
@@ -46,18 +46,6 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        function generateAuth(id, e) {
-            $.get("generate/auth/" + id, function (data) {
-                e.parent().html(data)
-            });
-        }
-
-        function generateAccess(id, e) {
-            $.get("generate/access/" + id, function (data) {
-                e.parent().html(data)
-            });
-        }
-
         size = $(window).innerHeight();
         full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
         nav = $('.navbar').innerHeight();

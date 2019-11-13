@@ -114,51 +114,12 @@
                                                      id="php_{{ methodId }}-{{ loop.index }}"
                                                      role="tabpanel"
                                                      aria-labelledby="php_{{ methodId }}-{{ loop.index }}">
-                                        <pre class="bg-dark text-light w-100 p-2 rounded"><code class="language-php">&lt;?php
-    $API_AUTH_TOKEN = ""; //Your API AUTH TOKEN
-    $API_ACCESS_TOKEN = ""; //Your API ACCESS Token
-    {% if method.method is same as('PUT') %}
-        // Create map with request parameters
-        $params = array ('name' => 'John', 'lastname' => 'Doe');
-        // Build Http query using params
-        $query = http_build_query ($params);
-    {% endif %}
-$opts = [
-        'http' => [
-        'method' => "{{ method.method }}",
-        'header' => "API-Authorization: $API_AUTH_KEY\r\n" .
-                    "ACCESS-Authorization: $API_ACCESS_KEY\r\n"{% if method.method is same as('PUT') %}.
-                    "Content-Length: ".strlen($query)."\r\n",
-        'content' => $query
-        {% endif %}
-          ]
-         ];
-    $context = stream_context_create($opts);
-    $endpoint = file_get_contents('{{ url('api_front_login') }}{{ method.endpoint[1:] }}', false, $context);
-
-    $response = json_decode($endpoint);
-?></code></pre>
+                                                    <pre class="bg-dark text-light w-100 p-2 rounded">{% include 'front/code/php.html.twig' %}</pre>
                                                 </div>
                                                 <div class="tab-pane fade" id="curl_{{ methodId }}-{{ loop.index }}"
                                                      role="tabpanel"
                                                      aria-labelledby="curl_{{ methodId }}-{{ loop.index }}">
-                                                    <pre class="bg-dark text-light w-100 p-2 rounded language-bash"><code
-                                                                class="language-bash">#Send Authentication
-$API_PUBLIC_KEY = ""; #Your API AUTH TOKEN
-$API_PRIVATE_KEY = ""; #Your API ACCESS Token
-curl -X {{ method.method }} \
-  {{ url('api_front_login') }}{{ method.endpoint[1:] }} \
-  -H "API-Authorization: $API_PUBLIC_KEY" \
-  -H "ACCESS-Authorization: $API_PRIVATE_KEY" \
-  -H "Content-type: application/json" \
-{% if method.method is same as('PUT') %}
-    #JSON Array of datas you want to update
-    -d '{
-    "name":"John Doe",
-    "email":"abc@xyz.com"
-    }'
-{% endif %}
-</code></pre>
+                                                    <pre class="bg-dark text-light w-100 p-2 rounded language-bash">{% include 'front/code/curl.html.twig' %}</pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -168,29 +129,7 @@ curl -X {{ method.method }} \
                                             <hr>
                                             <h6 class="font-weight-bold">Example response:</h6>
                                             <h6 class="text-green">{{ method.response }}</h6>
-                                            <pre class="bg-dark text-light w-100 p-2 rounded"><code
-                                                        class="language-json">HTTP/1.1 200 OK
-{% if method.name is same as('list') %}
-    {
-    "{{ controller.name~'s' }}": [
-    {
-    "Name": "{{ controller.name }} 1"
-    },
-    {
-    "Name": "{{ controller.name }} 2"
-    }
-    ]
-    }
-{% else %}
-    {
-    "{{ controller.name~'s' }}": {
-    "1":
-    {
-    "Name": "{{ controller.name }} 1"
-    }
-    }
-    }
-{% endif %}</code></pre>
+                                            <pre class="bg-dark text-light w-100 p-2 rounded">{% include 'front/code/response.html.twig' %}</pre>
                                         </div>
                                     </div>
                                 </div>

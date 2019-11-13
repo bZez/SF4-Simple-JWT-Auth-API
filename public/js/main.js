@@ -1,11 +1,11 @@
 function generateAuth(id, e) {
-    $.get("generate/auth/" + id, function (data) {
+    $.get("../~private/generate/auth/" + id, function (data) {
         e.parent().html(data)
     });
 }
 
 function generateAccess(id, e) {
-    $.get("generate/access/" + id, function (data) {
+    $.get("../~private/generate/access/" + id, function (data) {
         e.parent().html(data)
     });
 }

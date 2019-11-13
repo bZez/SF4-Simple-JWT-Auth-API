@@ -33,6 +33,11 @@ class Partner
      */
     private $privileges = [];
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User")
+     */
+    private $admin;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -97,4 +102,21 @@ class Partner
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
+
+    /**
+     * @param mixed $admin
+     */
+    public function setAdmin($admin): void
+    {
+        $this->admin = $admin;
+    }
+
 }

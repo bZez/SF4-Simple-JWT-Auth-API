@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="row bg-white" style="height: calc(100vh - 86px)">
+        <div class="col-2 border">Left</div>
+        <div class="col-10 border" id="size">
+            <div class="row">
+                <div class="col-12 pl-5 p-4 section-header shadow-sm">
+                    <h3 class="section-h3">Partners</h3>
+                    <span>All</span>
+                </div>
+                <div class="row w-100 m-0 pl-5 pr-3 p-2 section-table-header border-bottom">
+                    <div class="col-2 p-0 border-right text-truncate"><input type="checkbox" id="checkAll"> NAME</div>
+                    <div class="col-2 border-right text-truncate">ADMIN</div>
+                    <div class="col-1 border-right text-truncate">USERS</div>
+                    <div class="col-2 border-right text-truncate">PRIVILEGES</div>
+                    <div class="col-5 border-right text-truncate">CONTROLLERS</div>
+                    {#                    <div class="col-3 border-right text-truncate">AUTH TOKEN</div>
+                                        <div class="col-3 border-right text-truncate">ACCESS TOKEN</div>#}
+                </div>
+
+                <div class="container-fluid w-100 p-0 m-0" style="overflow-y: auto;overflow-x: hidden" id="resize">
+                    {% for partner in partners %}
+                        {#                        {% set generateAuth = "<button onclick='generateAuth("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+                                    <i class='fas fa-user-lock'></i> &nbsp; Generate authentication token for user
+                                </a>" %}
+                                                {% set generateAccess = "<button onclick='generateAccess("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+                                    <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
+                                </a>" %}#}
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row">
+                            <div class="col-2 p-0 border-right text-truncate">
+                                <input type="checkbox"> {{ partner.name|upper }}
+                            </div>
+                            {#TODO PARTNER PAGE VIEW#}
+                            <div class="col-2 border-right text-truncate text-green">{{ partner.admin.firstName|capitalize ~' '~ partner.admin.lastName|upper }}</div>
+                            <div class="col-1 border-right text-truncate text-center">
+                                <div class="btn-primary rounded small p-0 font-weight-bold">{{ partner.users|length }}</div>
+                            </div>
+                            <div class="col-2 text-center border-right text-truncate">
+                                {% for method in partner.privileges|keys %}
+                                    <div class="d-inline-block btn-sm btn-primary btn-{{ method }} p-2 rounded font-weight-bold mb-2">{{ method }}
+                                       {# {% for controller in partner.privileges[method]|keys %}
+                                            <div class="bg-{{ method }}-1 rounded p-2 mt-1"> {{ controller }}
+                                                {% for action in partner.privileges[method][controller] %}
+                                                    <span class="bg-{{ method }} rounded p-1">{{ action }}</span>
+                                                {% endfor %}
+                                           </div>
+                                            {% if not loop.last %}
+                                                <br>
+                                            {% endif %}
+                                        {% endfor %}#}
+                                        </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-5  border-right text-truncate">{% set ctlArr = [] %}
+                                {% for method in partner.privileges|keys %}
+                                    {% for controller in partner.privileges[method]|keys %}
+                                        {% if controller not in ctlArr %}
+                                            {% set ctlArr =ctlArr|merge([controller]) %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for controller in ctlArr %}
+                               <div class="d-inline-block btn-sm btn-primary p-2 rounded font-weight-bold mb-2">{{ controller|capitalize }}</div>
+                                {% endfor %}
+                            </div>
+                            {#                            <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
+                                                        <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>#}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        size = $(window).innerHeight();
+        full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
+        nav = $('.navbar').innerHeight();
+        $('#resize').css('height', size - nav - full - 2 + 'px')
+
+        $("#checkAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+    </script>
+{% endblock %}

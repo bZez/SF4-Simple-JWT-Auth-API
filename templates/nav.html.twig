@@ -14,8 +14,11 @@
                 <a class="nav-link" href="./"><i class="fas fa-tachometer-alt"></i> &nbsp;
                     Dashboard <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item {% if '_users' in app.request.get('_route') %}active{% endif %}">
+            <li class="nav-item {% if '_user' in app.request.get('_route') %}active{% endif %}">
                 <a class="nav-link" href="./users"><i class="fas fa-users"></i> &nbsp; Users</a>
+            </li>
+            <li class="nav-item {% if '_partner' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="./partners"><i class="fas fa-users"></i> &nbsp; Partners</a>
             </li>
             <li class="nav-item {% if '_data' in app.request.get('_route') %}active{% endif %}">
                 <a class="nav-link" href="./datas"><i class="fas fa-database"></i> &nbsp; Data</a>

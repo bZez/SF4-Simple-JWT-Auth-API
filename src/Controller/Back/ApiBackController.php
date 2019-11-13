@@ -4,6 +4,7 @@
 namespace App\Controller\Back;
 
 
+use App\Repository\PartnerRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,13 +27,24 @@ class ApiBackController extends AbstractController
     }
 
     /**
-     * @Route("/users",name="api_back_users")
+     * @Route("/users",name="api_back_user")
      */
-    public function users(UserRepository $repository)
+    public function user(UserRepository $repository)
     {
         $users = $repository->findAll();
-        return $this->render('back/users.html.twig', [
+        return $this->render('back/user.html.twig', [
             'users' => $users
+        ]);
+    }
+
+    /**
+     * @Route("/partners",name="api_back_partner")
+     */
+    public function partner(PartnerRepository $repository)
+    {
+        $partners = $repository->findAll();
+        return $this->render('back/partner.html.twig', [
+            'partners' => $partners
         ]);
     }
 }

@@ -84,6 +84,12 @@ input[type="email"], input[type="text"], input[type="password"] {
     color: #FFF !important;
     border: none !important;
 }
+.bg-GET {
+    background-color: #2ee09d !important;
+}
+.bg-GET-1 {
+    background: #2baa76 !important;
+}
 
 .btn-secondary, .btn-PUT {
     padding: .5rem 1rem !important;

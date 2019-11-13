@@ -1,0 +1,13 @@
+<code class="language-bash">#Send Authentication
+$API_PUBLIC_KEY = ""; #Your API AUTH TOKEN
+$API_PRIVATE_KEY = ""; #Your API ACCESS Token
+curl -X {{ method.method }} \
+{{ url('api_front_login') }}{{ method.endpoint[1:] }} \
+-H "API-Authorization: $API_PUBLIC_KEY" \
+-H "ACCESS-Authorization: $API_PRIVATE_KEY" \
+-H "Content-type: application/json" \{% if method.method is same as('PUT') %}
+ #JSON Array of datas you want to update
+-d '{
+    "name":"John Doe",
+    "email":"abc@xyz.com"
+    }'{% endif %}</code>
