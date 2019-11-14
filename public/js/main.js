@@ -4,14 +4,24 @@ function generateAuth(id, e) {
     });
 }
 
-function generateAccess(id, e) {
-    $.get("../~private/generate/access/" + id, function (data) {
+function generateAccess(id,ctl, e) {
+    $.get("../~private/generate/access/" + ctl +"/" + id, function (data) {
         e.parent().html(data)
     });
 }
 
+function requestAccess(id,ctl, e) {
+    $.get("../~private/request/access/" + ctl +"/" + id, function (data) {
+        e.parent().html(data)
+    });
+}
+
+function submitter(what) {
+    $('form[name="' + what + '"]').submit();
+}
+
 function copyToClipboard(item) {
-    var copyText = document.getElementById(item);
+    let copyText = document.getElementById(item);
     copyText.select();
     copyText.setSelectionRange(0, 99999);
     /*For mobile devices*/

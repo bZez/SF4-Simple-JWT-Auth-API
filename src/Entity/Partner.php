@@ -38,9 +38,15 @@ class Partner
      */
     private $admin;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AccessRequest", mappedBy="partner", orphanRemoval=true)
+     */
+    private $accessRequests;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->accessRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,6 +123,37 @@ class Partner
     public function setAdmin($admin): void
     {
         $this->admin = $admin;
+    }
+
+    /**
+     * @return Collection|AccessRequest[]
+     */
+    public function getAccessRequests(): Collection
+    {
+        return $this->accessRequests;
+    }
+
+    public function addAccessRequest(AccessRequest $accessRequest): self
+    {
+        if (!$this->accessRequests->contains($accessRequest)) {
+            $this->accessRequests[] = $accessRequest;
+            $accessRequest->setPartner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccessRequest(AccessRequest $accessRequest): self
+    {
+        if ($this->accessRequests->contains($accessRequest)) {
+            $this->accessRequests->removeElement($accessRequest);
+            // set the owning side to null (unless already changed)
+            if ($accessRequest->getPartner() === $this) {
+                $accessRequest->setPartner(null);
+            }
+        }
+
+        return $this;
     }
 
 }

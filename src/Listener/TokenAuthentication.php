@@ -28,7 +28,7 @@ class TokenAuthentication extends AbstractController
         $this->authToken = $this->request->headers->get('API-Authorization');
         $this->accessToken = $this->request->headers->get('ACCESS-Authorization');
         $this->secret = $params->get('TOKEN_SECRET');
-        $this->endpoint = $this->request->server->get('REDIRECT_URL');
+        $this->endpoint = str_replace('index.php','',$this->request->server->get('REDIRECT_URL'));
     }
 
     /**

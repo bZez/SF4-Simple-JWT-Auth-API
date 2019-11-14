@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -53,6 +55,16 @@ class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $partner;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AccessRequest", mappedBy="requestedBy", orphanRemoval=true)
+     */
+    private $accessRequests;
+
+    public function __construct()
+    {
+        $this->accessRequests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -188,6 +200,37 @@ class User implements UserInterface
     public function setPartner(?Partner $partner): self
     {
         $this->partner = $partner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AccessRequest[]
+     */
+    public function getAccessRequests(): Collection
+    {
+        return $this->accessRequests;
+    }
+
+    public function addAccessRequest(AccessRequest $accessRequest): self
+    {
+        if (!$this->accessRequests->contains($accessRequest)) {
+            $this->accessRequests[] = $accessRequest;
+            $accessRequest->setRequestedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccessRequest(AccessRequest $accessRequest): self
+    {
+        if ($this->accessRequests->contains($accessRequest)) {
+            $this->accessRequests->removeElement($accessRequest);
+            // set the owning side to null (unless already changed)
+            if ($accessRequest->getRequestedBy() === $this) {
+                $accessRequest->setRequestedBy(null);
+            }
+        }
 
         return $this;
     }

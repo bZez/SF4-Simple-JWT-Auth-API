@@ -6,10 +6,18 @@
     <div class="row bg-white" style="height: calc(100vh - 86px)">
         <div class="col-2 border">Left</div>
         <div class="col-10 border" id="size">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-12 pl-5 p-4 section-header shadow-sm">
-                    <h3 class="section-h3">Users</h3>
-                    <span>All</span>
+                    <div class="float-left">
+                        <h3 class="section-h3">Users</h3>
+                        <span>All</span>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn btn-primary shadow-none"
+                                                               data-toggle="modal" data-target="#createUserModal">
+                            <i class="fas fa-plus"></i> &nbsp; Add
+                        </button>
+                    </div>
                 </div>
                 <div class="row w-100 m-0 pl-5 pr-3 p-2 section-table-header border-bottom">
                     <div class="col-2 p-0 border-right text-truncate"><input type="checkbox" id="checkAll"> NAME</div>
@@ -38,6 +46,7 @@
                             <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
                         </div>
                     {% endfor %}
+                    {% include 'front/users/add.html.twig' %}
                 </div>
             </div>
         </div>
@@ -45,6 +54,15 @@
 
 {% endblock %}
 {% block javascripts %}
+    <script>
+        $('*').hide();
+        {%  if is_granted('ROLE_ADMIN_PARTNER') %}
+        $('#user_creation_partner').hide();
+        {% endif %}
+        function submitter(what) {
+            $('form[name="' + what + '"]').submit();
+        }
+    </script>
     <script>
         size = $(window).innerHeight();
         full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();

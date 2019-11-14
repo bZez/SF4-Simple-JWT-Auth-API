@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use ReallySimpleJWT\Build;
 use ReallySimpleJWT\Encode;
 use ReallySimpleJWT\Exception\ValidateException;
@@ -50,10 +52,9 @@ class AuthToken
     private $ip;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\AccessToken")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\AccessToken", inversedBy="authTokens")
      */
-    private $accessToken;
+    private $AccessTokens;
 
 
     public function __construct($user)
@@ -61,7 +62,6 @@ class AuthToken
         $tokenBuilder = new Build('JWT', new Validate(), new Encode());
         $this->creation = new DateTime();
         $this->expiration = $this->creation->modify("+1year");
-        $exp = strtotime($this->expiration->format('Y-m-d'));
         $userInfos = [
             "login" => $user->getEmail(),
             "roles" => $user->getRoles()
@@ -71,10 +71,6 @@ class AuthToken
                 ->setHeaderClaim('for', strtoupper($user->getLastName()) . ' ' . ucfirst($user->getFirstName()))
                 ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
                 ->setIssuer('API Authenticator')
-                ->setSubject('api-auth-token')
-                ->setAudience('https://yourapi.com')
-                ->setExpiration($exp)
-                ->setIssuedAt(time())
                 ->setJwtId(md5(uniqid('TOKEN')))
                 ->setPayloadClaim('user', $userInfos)
                 ->build();
@@ -83,6 +79,7 @@ class AuthToken
         }
         $this->value = $t->getToken();
         $this->user = $user;
+        $this->AccessTokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,20 +162,29 @@ class AuthToken
     }
 
     /**
-     * @return mixed
+     * @return Collection|AccessToken[]
      */
-    public function getAccessToken()
+    public function getAccessTokens(): Collection
     {
-        return $this->accessToken;
+        return $this->AccessTokens;
     }
 
-    /**
-     * @param mixed $accessToken
-     */
-    public function setAccessToken(?AccessToken $accessToken)
+    public function addAccessToken(AccessToken $accessToken): self
     {
-        $this->accessToken = $accessToken;
+        if (!$this->AccessTokens->contains($accessToken)) {
+            $this->AccessTokens[] = $accessToken;
+        }
+
+        return $this;
     }
 
+    public function removeAccessToken(AccessToken $accessToken): self
+    {
+        if ($this->AccessTokens->contains($accessToken)) {
+            $this->AccessTokens->removeElement($accessToken);
+        }
+
+        return $this;
+    }
 
 }

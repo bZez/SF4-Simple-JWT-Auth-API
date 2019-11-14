@@ -7,6 +7,7 @@ namespace App\Controller\Front;
 use App\Entity\User;
 use App\Form\UserCreationType;
 use App\Helper\DataParser;
+use App\Repository\PartnerRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,19 @@ class ApiFrontController extends AbstractController
     public function dashboard()
     {
         return $this->render('front/dash.html.twig');
+    }
+
+    /**
+     * @Route("/p/{partner}",name="api_front_partner")
+     * @return Response
+     */
+    public function partner($partner,PartnerRepository $repository)
+    {
+        $partner = $repository->findOneBy(['name'=>$partner]);
+        return $this->render('front/partner.html.twig',
+            [
+                'partner' =>$partner
+            ]);
     }
 
     /**

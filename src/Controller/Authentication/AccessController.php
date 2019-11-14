@@ -4,11 +4,13 @@
 namespace App\Controller\Authentication;
 
 
+use App\Entity\AccessRequest;
 use App\Entity\AccessToken;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,20 +34,42 @@ class AccessController extends AbstractController
 
     /**
      * @param User $user
+     * @param $controller string
      * @return String Token
-     * @Route("/~private/generate/access/{user}",name="api_back_generate_access")
+     * @Route("/~private/generate/access/{controller}/{user}",name="api_back_generate_access")
      */
-    public function generateAccessToken(User $user)
+    public function generateAccessToken(User $user,$controller)
     {
         $authToken = $user->getAuthToken();
-        if ($authToken->getAccessToken())
-            $accessToken = $authToken->getAccessToken();
-        else
-            $accessToken = new AccessToken($authToken);
-        $this->em->persist($accessToken);
-        $authToken->setAccessToken($accessToken);
-        $this->em->persist($authToken);
+        $users = $user->getPartner()->getUsers();
+        $accessToken = new AccessToken($authToken,$controller);
+        foreach ($users as $user) {
+            if($authToken = $user->getAuthToken())
+            {
+                $accessToken->addAuthToken($authToken);
+                $this->em->persist($accessToken);
+                $authToken->addAccessToken($accessToken);
+                $this->em->persist($authToken);
+            }
+        }
+        /*        if ($authToken->getAccessTokens()->contains())
+                    $accessToken = $authToken->getAccessTokens();
+                else*/
         $this->em->flush();
         return $this->json([$accessToken->getValue()]);
+    }
+
+    /**
+     * @param User $user
+     * @param $controller
+     * @Route("/~private/request/access/{controller}/{user}",name="api_back_request_access")
+     * @return JsonResponse
+     */
+    public function requestAccess(User $user,$controller)
+    {
+        $accessReq = new AccessRequest($user,$controller);
+        $this->em->persist($accessReq);
+        $this->em->flush();
+        return $this->json(["Access request registered !"]);
     }
 }
