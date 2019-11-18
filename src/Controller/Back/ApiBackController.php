@@ -7,6 +7,7 @@ namespace App\Controller\Back;
 use App\Entity\User;
 use App\Form\UserCreationType;
 use App\Helper\DataParser;
+use App\Repository\AccessRequestRepository;
 use App\Repository\PartnerRepository;
 use App\Repository\UserRepository;
 use ReflectionException;
@@ -24,6 +25,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class ApiBackController extends AbstractController
 {
+    private $controllers;
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $parser = new DataParser($kernel);
+        $this->controllers = $parser->getControllers();
+    }
+
     /**
      * @Route("/",name="api_back_dash")
      * @return Response
@@ -67,29 +76,40 @@ class ApiBackController extends AbstractController
     }
 
     /**
-     * @param KernelInterface $kernel
      * @return Response
-     * @throws ReflectionException
      * @Route("/datas",name="api_back_data")
      */
-    public function data(KernelInterface $kernel)
+    public function data()
     {
-        $parser = new DataParser($kernel);
-        $controllers = $parser->getControllers();
         return $this->render('front/data.html.twig', [
-            'controllers' => $controllers,
+            'controllers' => $this->controllers,
         ]);
     }
 
+    /**
+     * @param AccessRequestRepository $repository
+     * @return Response
+     * @Route("/requests",name="api_back_request")
+     */
+    public function request(AccessRequestRepository $repository)
+    {
+        $requests = $repository->findAll();
+        return $this->render('back/request.html.twig', [
+            'requests' => $requests,
+        ]);
+    }
 
     /**
+     * @param PartnerRepository $repository
+     * @return Response
      * @Route("/partners",name="api_back_partner")
      */
     public function partner(PartnerRepository $repository)
     {
         $partners = $repository->findAll();
         return $this->render('back/partner.html.twig', [
-            'partners' => $partners
+            'partners' => $partners,
+            'controllers' => $this->controllers
         ]);
     }
 }

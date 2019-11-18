@@ -18,36 +18,39 @@ class DataParser
      * @throws ReflectionException
      * @author  Sam BZEZ <sam@bzez.dev>
      */
-    public function __construct($kernel)
+    public function __construct($kernel=null)
     {
-        $dataDir = $kernel->getProjectDir() . '/src/Controller/Data/*';
-        $dir = new \DirectoryIterator(dirname($dataDir));
-        $this->controllers = [];
-        $i = 0;
-        foreach ($dir as $fileinfo) {
-            if (!$fileinfo->isDot()) {
-                $className = explode('.', $fileinfo->getFilename())[0];
-                $c = new ReflectionClass('App\Controller\Data\\' . $className);
-                $this->controllers[$i]['name'] = substr($className, 0, -10);
-                $doc = str_replace('*', '', $c->getDocComment());
-                $doc = str_replace('/', '', $doc);
-                $doc = str_replace('\\', '', $doc);
-                $this->controllers[$i]['doc'] = $doc;
-                foreach ($c->getMethods() as $id => $m) {
-                    if ($m->class == $c->name) {
-                        $this->controllers[$i]['methods'][] = [
-                            'name' => $m->name,
-                            'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
-                            'method' => $this->parseMethodComments($c, $m)['method'],
-                            'response' => $this->parseMethodComments($c, $m)['response'],
-                            'params' => $this->parseMethodComments($c, $m)['params'],
-                            'infos' => $this->parseMethodComments($c, $m)['infos']
-                        ];
+        if($kernel)
+        {
+            $dataDir = $kernel->getProjectDir() . '/src/Controller/Data/*';
+            $dir = new \DirectoryIterator(dirname($dataDir));
+            $this->controllers = [];
+            $i = 0;
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    $className = explode('.', $fileinfo->getFilename())[0];
+                    $c = new ReflectionClass('App\Controller\Data\\' . $className);
+                    $this->controllers[$i]['name'] = substr($className, 0, -10);
+                    $doc = str_replace('*', '', $c->getDocComment());
+                    $doc = str_replace('/', '', $doc);
+                    $doc = str_replace('\\', '', $doc);
+                    $this->controllers[$i]['doc'] = $doc;
+                    foreach ($c->getMethods() as $id => $m) {
+                        if ($m->class == $c->name) {
+                            $this->controllers[$i]['methods'][] = [
+                                'name' => $m->name,
+                                'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
+                                'method' => $this->parseMethodComments($c, $m)['method'],
+                                'response' => $this->parseMethodComments($c, $m)['response'],
+                                'params' => $this->parseMethodComments($c, $m)['params'],
+                                'infos' => $this->parseMethodComments($c, $m)['infos']
+                            ];
+                        }
                     }
+                    $i++;
                 }
-                $i++;
-            }
 
+            }
         }
     }
 
@@ -107,5 +110,20 @@ class DataParser
     public function getControllers()
     {
         return $this->controllers;
+    }
+
+    public function getMethods($controller)
+    {
+        $c = new ReflectionClass('App\Controller\Data\\' . $controller.'Controller');
+        $methods['GET'] = [];
+        $methods['POST'] = [];
+        $methods['PUT'] = [];
+        $methods['DELETE'] = [];
+        foreach ($c->getMethods() as $id => $m) {
+            if ($m->class == $c->name) {
+                $methods[$this->parseMethodComments($c, $m)['method']][] .= $m->name;
+            }
+        }
+        return $methods;
     }
 }

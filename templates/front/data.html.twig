@@ -35,7 +35,7 @@
                                 {% if accessToken.controller == controller.name %}
                                     <input type="text" class="form-control m-0 h-100 shadow-none"
                                            id="access-token-{{ loop.index }}"
-                                           aria-describedby="basic-addon3" value="{{ accessToken.value }}">
+                                           aria-describedby="basic-addon3" value="{{ accessToken.value }}" readonly>
                                 {% endif %}
                                 {# {% else %}
                                      <input type="button" value="Generate" onclick="generateAccess('{{ app.user.id }}','{{ controller.name }}',$(this))">#}
@@ -45,10 +45,19 @@
                             </div>
                         </div>
                     {% else %}
-                       <span>
-                           <button class="btn btn btn-danger shadow-none col-md-3 col-sm-12" onclick="requestAccess('{{ app.user.id }}','{{ controller.name }}',$(this))">
+                        <span>
+                            {% for accessRequest in app.user.accessRequests %}
+                                {% if accessRequest.controller == controller.name %}
+                                    <span class="btn btn btn-danger shadow-none col-md-3 col-sm-12">
+                               <i class="fa fas fa-clock"></i> Requested {{ accessRequest.requestedAt|date('d-m-Y') }}
+                           </span>
+                                {% endif %}
+                            {% else %}
+                                <button class="btn btn btn-danger shadow-none col-md-3 col-sm-12"
+                                        onclick="requestAccess('{{ app.user.id }}','{{ controller.name }}',$(this))">
                                <i class="fa fas fa-lock"></i> Request access right
                            </button>
+                            {% endfor %}
                        </span>
                     {% endif %}
                     {% for method in controller.methods %}

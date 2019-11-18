@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="row bg-white" style="height: calc(100vh - 86px)">
+        <div class="col-2 border">Left</div>
+        <div class="col-10 border" id="size">
+            <div class="row align-items-center">
+                <div class="col-12 pl-5 p-4 section-header shadow-sm">
+                    <div class="float-left">
+                        <h3 class="section-h3">Requests</h3>
+                        <span>All</span>
+                    </div>
+                </div>
+                <div class="row w-100 m-0 pl-5 pr-3 p-2 section-table-header border-bottom">
+                    <div class="col-2 p-0 border-right text-truncate">PARTNER</div>
+                    <div class="col-2 border-right text-truncate">USER</div>
+                    <div class="col-2 border-right text-truncate">CONTROLLER</div>
+                    <div class="col-2 border-right text-truncate">METHOD</div>
+                    <div class="col-2 border-right text-truncate">DATE</div>
+                    <div class="col-2 border-right text-truncate">ACTION</div>
+                </div>
+
+                <div class="container-fluid w-100 p-0 m-0" style="overflow-y: auto;overflow-x: hidden" id="resize">
+                    {% for request in requests %}
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row">
+                            <div class="col-2 p-0 border-right text-green text-truncate">{{ request.partner.name|upper }}</div>
+                            <div class="col-2 border-right text-truncate">{{ request.requestedBy.lastName|upper ~' '~ request.requestedBy.firstName|capitalize }}</div>
+                            <div class="col-2 border-right text-truncate">{{ request.controller }}</div>
+                            <div class="col-2 border-right text-truncate text-center">
+                                <span class="d-inline-block btn-sm btn-primary btn-GET p-1 rounded font-weight-bold">GET</span>
+                                <span class="d-inline-block btn-sm btn-primary btn-POST p-1 rounded font-weight-bold">POST</span>
+                                <span class="d-inline-block btn-sm btn-primary btn-PUT p-1 rounded font-weight-bold">PUT</span>
+                                <span class="d-inline-block btn-sm btn-primary btn-DELETE p-1 rounded font-weight-bold">DELETE</span>
+                            </div>
+                            <div class="col-2 border-right text-truncate text-center">{{ request.requestedAt|date('Y-m-d') }}</div>
+                            <div class="col-2 border-right text-truncate text-center small" id="actions-block-{{ request.id }}">
+                                {% if request.status is not null %}
+                                    {% if request.status %}
+                                        <b class="text-green">Access granted !</b>
+                                    {% else %}
+                                        <b class="text-danger">Access denied !</b>
+                                    {% endif %}
+                                {% else %}
+                                    <button class="btn btn-success btn-sm shadow-none bg-GET border-GET" data-toggle="modal" data-target="#accessModal-{{ request.id }}"{#onclick="acceptRequest('{{ request.id }}',$(this))"#}>
+                                        <i class="fas fa-check"></i> &nbsp; Accept
+                                    </button>
+                                    <button class="btn btn-sm btn-danger shadow-none"
+                                            onclick="denyRequest('{{ request.id }}',$(this))">
+                                        <i class="fas fa-window-close"></i> &nbsp; Deny
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% include 'back/access/add.html.twig' %}
+                    {% endfor %}
+                    {#{% for user in users %}
+                        {% set generateAuth = "<button onclick='generateAuth("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+            <i class='fas fa-user-lock'></i> &nbsp; Generate authentication token for user
+        </a>" %}
+                        {% set generateAccess = "<button onclick='generateAccess("~ app.user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+            <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
+        </a>" %}
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-0 border-bottom align-items-center user-result-row">
+                            <div class="col-2 p-0 border-right text-green text-truncate">
+                                <input type="checkbox"> {{ user.lastName|upper }} {{ user.firstName|capitalize }}
+                            </div>
+                            #}{#TODO PARTNER PAGE VIEW#}{#
+                            <div class="col-2 border-right text-truncate">{{ user.partner.name|upper }}</div>
+                            <div class="col-2 border-right text-truncate">{{ user.email }}</div>
+                            <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
+                            <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
+                        </div>
+                    {% endfor %}#}
+                    {#{% include 'front/users/add.html.twig' %}#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        size = $(window).innerHeight();
+        full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
+        nav = $('.navbar').innerHeight();
+        $('#resize').css('height', size - nav - full - 2 + 'px')
+
+        $("#checkAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+    </script>
+{% endblock %}

@@ -36,7 +36,7 @@ class AccessController extends AbstractController
      * @param User $user
      * @param $controller string
      * @return String Token
-     * @Route("/~private/generate/access/{controller}/{user}",name="api_back_generate_access")
+     * @Route("/_secure/generate/access/{controller}/{user}",name="api_back_generate_access")
      */
     public function generateAccessToken(User $user,$controller)
     {
@@ -52,9 +52,6 @@ class AccessController extends AbstractController
                 $this->em->persist($authToken);
             }
         }
-        /*        if ($authToken->getAccessTokens()->contains())
-                    $accessToken = $authToken->getAccessTokens();
-                else*/
         $this->em->flush();
         return $this->json([$accessToken->getValue()]);
     }
@@ -62,7 +59,7 @@ class AccessController extends AbstractController
     /**
      * @param User $user
      * @param $controller
-     * @Route("/~private/request/access/{controller}/{user}",name="api_back_request_access")
+     * @Route("/~private/request/access/{controller}/{user}",name="api_front_request_access")
      * @return JsonResponse
      */
     public function requestAccess(User $user,$controller)

@@ -84,8 +84,11 @@ input[type="email"], input[type="text"], input[type="password"] {
     color: #FFF !important;
     border: none !important;
 }
-.bg-GET {
+.bg-GET,.bg-primary {
     background-color: #2ee09d !important;
+}
+.border-GET {
+    border-color: #2ee09d !important;
 }
 .bg-GET-1 {
     background: #2baa76 !important;
@@ -98,20 +101,46 @@ input[type="email"], input[type="text"], input[type="password"] {
     border: none !important;
 }
 
+.bg-PUT {
+    background-color: #FFB311 !important;
+}
+.border-PUT {
+    border-color: #FFB311 !important;
+}
+.bg-PUT-1 {
+    background: #b57f0e !important;
+}
+
 .btn-POST {
     padding: .5rem 1rem !important;
     background-color: #4070EC !important;
     color: #FFF !important;
     border: none !important;
 }
-
+.bg-POST {
+    background-color: #4070EC !important;
+}
+.border-POST {
+    border-color: #4070EC !important;
+}
+.bg-POST-1 {
+    background: #2d51a2 !important;
+}
 .btn-DELETE {
     padding: .5rem 1rem !important;
     background-color: #dc3545 !important;
     color: #FFF !important;
     border: none !important;
 }
-
+.bg-DELETE {
+    background-color: #dc3545 !important;
+}
+.border-DELETE {
+    border-color: #dc3545 !important;
+}
+.bg-DELETE-1 {
+    background: #a32c38 !important;
+}
 #overlayer {
     z-index: 99999;
     width: 100%;

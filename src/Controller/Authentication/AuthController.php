@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 
 /**
@@ -83,6 +84,8 @@ class AuthController extends AbstractController
      */
     public function generateAuthToken(User $user)
     {
+        /*if(!$this->getUser()->getPartner()->getUsers()->contains($user))
+            throw new UnsupportedUserException('Invalid request !');*/
         if ($user->getAuthToken()) {
             $token = $user->getAuthToken();
             return $this->json([$token->getValue()]);

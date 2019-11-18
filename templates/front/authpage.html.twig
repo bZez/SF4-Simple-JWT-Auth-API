@@ -10,7 +10,7 @@
                                     class="font-weight-bold">Auth Token</small></span>
                 </div>
                 <input type="text" class="form-control m-0 h-100 shadow-none" id="auth-token"
-                       aria-describedby="basic-addon3" value="{{ app.user.authToken.value }}">
+                       aria-describedby="basic-addon3" value="{{ app.user.authToken.value }}" readonly>
                 <div class="input-group-append" onclick="copyToClipboard('auth-token')">
                     <span class="input-group-text"><i class="fa fa fa-copy"></i></span>
                 </div>

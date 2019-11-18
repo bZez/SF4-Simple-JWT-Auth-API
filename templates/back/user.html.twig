@@ -3,18 +3,19 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+    {% set admin = users[0].partner.admin %}
     <div class="row bg-white" style="height: calc(100vh - 86px)">
         <div class="col-2 border">Left</div>
         <div class="col-10 border" id="size">
             <div class="row align-items-center">
                 <div class="col-12 pl-5 p-4 section-header shadow-sm">
                     <div class="float-left">
-                        <h3 class="section-h3">Users</h3>
+                        <h3 class="section-h3">Users </h3>
                         <span>All</span>
                     </div>
                     <div class="float-right">
                         <button class="btn btn btn-primary shadow-none"
-                                                               data-toggle="modal" data-target="#createUserModal">
+                                data-toggle="modal" data-target="#createUserModal">
                             <i class="fas fa-plus"></i> &nbsp; Add
                         </button>
                     </div>
@@ -23,8 +24,8 @@
                     <div class="col-2 p-0 border-right text-truncate"><input type="checkbox" id="checkAll"> NAME</div>
                     <div class="col-2 border-right text-truncate">COMPANY</div>
                     <div class="col-2 border-right text-truncate">MAIL</div>
-                    <div class="col-3 border-right text-truncate">AUTH TOKEN</div>
-                    <div class="col-3 border-right text-truncate">ACCESS TOKEN</div>
+                    <div class="col-6 border-right text-truncate">AUTH TOKEN</div>
+                    {#<div class="col-3 border-right text-truncate">ACCESS TOKEN</div>#}
                 </div>
 
                 <div class="container-fluid w-100 p-0 m-0" style="overflow-y: auto;overflow-x: hidden" id="resize">
@@ -32,18 +33,18 @@
                         {% set generateAuth = "<button onclick='generateAuth("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate authentication token for user
         </a>" %}
-                        {% set generateAccess = "<button onclick='generateAccess("~ app.user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
+                        {#{% set generateAccess = "<button onclick='generateAccess("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
-        </a>" %}
-                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-0 border-bottom align-items-center user-result-row">
+        </a>" %}#}
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row">
                             <div class="col-2 p-0 border-right text-green text-truncate">
-                                <input type="checkbox"> {{ user.lastName|upper }} {{ user.firstName|capitalize }}
+                                {% if user == admin %}<i class="fa fas fa-user-shield"></i>{% else %}<input
+                                        type="checkbox">{% endif %} {{ user.lastName|upper }} {{ user.firstName|capitalize }}
                             </div>
-                            {#TODO PARTNER PAGE VIEW#}
                             <div class="col-2 border-right text-truncate">{{ user.partner.name|upper }}</div>
                             <div class="col-2 border-right text-truncate">{{ user.email }}</div>
-                            <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
-                            <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>
+                            <div class="col-6 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
+                            {#                            <div class="col-3 border-right text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>#}
                         </div>
                     {% endfor %}
                     {% include 'front/users/add.html.twig' %}
@@ -55,15 +56,9 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        $('*').hide();
-        {%  if is_granted('ROLE_ADMIN_PARTNER') %}
-        $('#user_creation_partner').hide();
+        {% if is_granted('ROLE_ADMIN_PARTNER') %}
+        $('#user_creation_partner').parent().remove();
         {% endif %}
-        function submitter(what) {
-            $('form[name="' + what + '"]').submit();
-        }
-    </script>
-    <script>
         size = $(window).innerHeight();
         full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
         nav = $('.navbar').innerHeight();

@@ -33,7 +33,7 @@ class AccessRequest
     private $requestedAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",nullable=true)
      */
     private $status;
 
@@ -49,7 +49,6 @@ class AccessRequest
         $this->requestedBy = $user;
         $this->controller = $controller;
         $this->partner = $user->getPartner();
-        $this->status = false;
     }
 
     public function getId(): ?int

@@ -100,11 +100,8 @@ class AccessToken
 
     public function isValid($secret)
     {
-        $expireDate = strtotime(($this->getExpiration())->format('Y-m-d'));
-        $tokenExpireDate = Tokenizer::getPayload($this->getValue(), $secret)['exp'];
-        if ($expireDate !== $tokenExpireDate)
+        if (!Tokenizer::validate($this->getValue(), $secret))
             throw new Exception('Invalid or modified token...', 000004);
-
     }
 
     /**

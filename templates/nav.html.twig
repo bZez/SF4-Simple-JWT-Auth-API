@@ -18,11 +18,19 @@
                 <a class="nav-link" href="./users"><i class="fas fa-users"></i> &nbsp; Users</a>
             </li>
             <li class="nav-item {% if '_partner' in app.request.get('_route') %}active{% endif %}">
-                <a class="nav-link" href="./{% if is_granted('ROLE_ADMIN') %}partners{% else %}p/{{ app.user.partner.name }}{% endif %}"><i class="fas fa-users"></i> &nbsp; {% if is_granted('ROLE_ADMIN') %}Partners{% else %}{{ app.user.partner.name }}{% endif %}</a>
+                <a class="nav-link"
+                   href="./{% if is_granted('ROLE_ADMIN') %}partners{% else %}p/{{ app.user.partner.name }}{% endif %}"><i
+                            class="fas fa-users"></i>
+                    &nbsp; {% if is_granted('ROLE_ADMIN') %}Partners{% else %}{{ app.user.partner.name }}{% endif %}</a>
             </li>
             <li class="nav-item {% if '_data' in app.request.get('_route') %}active{% endif %}">
                 <a class="nav-link" href="./datas"><i class="fas fa-database"></i> &nbsp; Data</a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item {% if '_request' in app.request.get('_route') %}active{% endif %}">
+                    <a class="nav-link" href="./requests"><i class="fas fa-clock"></i> &nbsp; Request</a>
+                </li>
+            {% endif %}
             <li class="nav-item {% if '_activity' in app.request.get('_route') %}active{% endif %}">
                 <a class="nav-link" href="./activity"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
             </li>

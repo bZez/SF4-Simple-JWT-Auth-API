@@ -1,0 +1,35 @@
+<div class="modal fade" id="accessModal-{{ request.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="accessModalLabel-{{ request.id }}"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accessModalLabel-{{ request.id }}">Grant {{ request.controller }} access
+                    to {{ request.partner.name|upper }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="accessForm-{{ request.id }}" id="accessForm-{{ request.id }}" method="post" enctype="multipart/form-data">
+                    {% for m,actions in parser.methods(request.controller) %}
+                        <div class="d-inline-block btn-sm btn-primary btn-{{ m }} p-1 rounded font-weight-bold">{{ m }}</div>
+                        <br>
+                        {% for a in actions %}
+                            <span class="d-inline-block btn-sm btn-primary btn-{{ m }} p-1 rounded font-weight-bold mt-2">
+                        <input type="checkbox" name="actions[{{ m }}][]" value="{{ a }}" multiple> {{ a }}
+                        </span>
+                        {% endfor %}
+                        {% if not loop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="acceptRequest('{{ request.id }}',$('#accessForm-{{ request.id }}'));$(this).remove()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

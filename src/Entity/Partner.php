@@ -102,6 +102,45 @@ class Partner
         return $this->privileges;
     }
 
+    public function addPrivilege($controller, $methods, $actions)
+    {
+        $prArr = $this->getPrivileges();
+        foreach ($methods as $method) {
+            $prArr[$method][$controller] = [];
+            foreach ($actions as $action) {
+                $prArr[$method][$controller][] .= $action;
+            }
+        }
+        $this->setPrivileges($prArr);
+    }
+
+    public function removePrivilegeAction($controller, $method, $action)
+    {
+        $prArr = $this->getPrivileges();
+        if (($key = array_search($action, $prArr[$method][$controller])) !== false) {
+            unset($prArr[$method][$controller][$key]);
+        }
+        $this->setPrivileges($prArr);
+    }
+
+    public function removePrivilegeMethod($controller, $method)
+    {
+        $prArr = $this->getPrivileges();
+        unset($prArr[$method][$controller]);
+        $this->setPrivileges($prArr);
+    }
+
+    public function removePrivilege($controller)
+    {
+        $prArr = $this->getPrivileges();
+        unset($prArr['GET'][$controller]);
+        unset($prArr['POST'][$controller]);
+        unset($prArr['PUT'][$controller]);
+        unset($prArr['DELETE'][$controller]);
+        $this->setPrivileges($prArr);
+    }
+
+
     public function setPrivileges(array $privileges): self
     {
         $this->privileges = $privileges;
