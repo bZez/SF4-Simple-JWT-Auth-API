@@ -1,6 +1,8 @@
 # SF4-Simple-JWT-Auth-API
 Simple API Authentication with JWT
 
+![Demo](/Demo-APIJWT.gif)
+
 # Demo
 https://api.bzez.dev/
 
