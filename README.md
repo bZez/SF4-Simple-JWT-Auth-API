@@ -1,5 +1,5 @@
 # SF4-Simple-JWT-Auth-API
-Simple API Authentication with JWT
+Complete but Simple API System with JWT
 
 ![Demo](/Demo-APIJWT.gif)
 
