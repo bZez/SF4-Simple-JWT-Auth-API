@@ -1,5 +1,16 @@
 # SF4-Simple-JWT-Auth-API
-Simple API Authentication with JWT
+Complete but Simple API System with JWT and Automatic documentation genertation.
+
+![Demo](/Demo-APIJWT.gif)
+
+# Demo
+https://api.bzez.dev/
+
+Admin: admin@demo.com / 123456
+
+Admin Partner: partner@demo.com / 123456
+
+User: user@demo.com / 123456
 
 # Installation
 `composer install`
