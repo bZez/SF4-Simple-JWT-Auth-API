@@ -4,14 +4,14 @@
 
 {% block body %}
     {# START - STATIC EXAMPLE OF AUTHENTICATION #}
-    {% include 'front/authpage.html.twig' %}
+    {#{% include 'front/authpage.html.twig' %}#}
     {# END - STATIC EXAMPLE OF AUTHENTICATION #}
     {% for controller in controllers %}
         {% set methodId = loop.index %}
         <div class="container-fluid bg-white rounded p-4 mb-3 shadow-sm">
             <div class="row">
                 <div class="col-12">
-                    <h3>/{{ controller.name }}s</h3>
+                    <h3>{{ controller.source }} /{{ controller.name }}s</h3>
                     <h6>{{ controller.doc }}</h6>
                     <hr>
                     <button class="btn btn btn-primary shadow-none mb-3 mb-md-0 col-md-3 col-sm-12 m-0"
@@ -20,10 +20,10 @@
                             aria-controls="method-{{ methodId }}">
                         <i class="fa fas fa-eye"></i> Show/Hide endpoints
                     </button>
-                    {% if (controller.name|lower~'s' in app.user.partner.privileges['GET']|keys)
-                        or (controller.name|lower~'s' in app.user.partner.privileges['PUT']|keys)
-                        or (controller.name|lower~'s' in app.user.partner.privileges['POST']|keys)
-                        or (controller.name|lower~'s' in app.user.partner.privileges['DELETE']|keys) %}
+                    {% if ((app.user.partner.privileges[controller.source]['GET'] is defined) and (controller.name|lower~'s' in app.user.partner.privileges[controller.source]['GET']|keys))
+                        or ((app.user.partner.privileges[controller.source]['POST'] is defined) and (controller.name|lower~'s' in app.user.partner.privileges[controller.source]['POST']|keys))
+                        or ((app.user.partner.privileges[controller.source]['PUT'] is defined) and (controller.name|lower~'s' in app.user.partner.privileges[controller.source]['PUT']|keys))
+                        or ((app.user.partner.privileges[controller.source]['DELETE'] is defined) and (controller.name|lower~'s' in app.user.partner.privileges[controller.source]['DELETE']|keys)) %}
                         <span class="btn btn btn-secondary col-md-3 col-sm-12 m-0">
                             <i class="fa fas fa-check"></i> You have access right
                         </span>
@@ -32,7 +32,7 @@
                                 <span class="input-group-text" id="basic-addon3"><small class="font-weight-bold">Access Token</small></span>
                             </div>
                             {% for accessToken in app.user.authToken.accessTokens %}
-                                {% if accessToken.controller == controller.name %}
+                                {% if (accessToken.controller == controller.name) and (accessToken.source == controller.source) %}
                                     <input type="text" class="form-control m-0 h-100 shadow-none"
                                            id="access-token-{{ loop.index }}"
                                            aria-describedby="basic-addon3" value="{{ accessToken.value }}" readonly>
@@ -46,25 +46,28 @@
                         </div>
                     {% else %}
                         <span>
+                            {% set ctls = [] %}
                             {% for accessRequest in app.user.accessRequests %}
-                                {% if accessRequest.controller == controller.name %}
+                                {% set ctls = ctls|merge([accessRequest.controller]) %}
+                                {% if (accessRequest.controller == controller.name) and (accessRequest.source == controller.source) and (accessRequest.status != true) %}
                                     <span class="btn btn btn-danger shadow-none col-md-3 col-sm-12">
                                <i class="fa fas fa-clock"></i> Requested {{ accessRequest.requestedAt|date('d-m-Y') }}
                            </span>
                                 {% endif %}
-                            {% else %}
-                                <button class="btn btn btn-danger shadow-none col-md-3 col-sm-12"
-                                        onclick="requestAccess('{{ app.user.id }}','{{ controller.name }}',$(this))">
+                            {% endfor %}
+                            {% if controller.name not in ctls %}
+                                <button class="btn btn btn-danger shadow-none col-md-3 col-sm-12 req-btn-{{ controller.name }}"
+                                        onclick="requestAccess('{{ app.user.id }}','{{ controller.name }}','{{ controller.source }}',$(this))">
                                <i class="fa fas fa-lock"></i> Request access right
                            </button>
-                            {% endfor %}
+                            {% endif %}
                        </span>
                     {% endif %}
                     {% for method in controller.methods %}
                         <div id="method-{{ methodId }}" class="collapse mt-3">
                             <div class="row">
                                 <div class="col-12">
-                                    <h5>/{{ method.name|upper }} - {{ method.infos }}</h5>
+                                    <h5>/{{ method.name|upper }} - {{ method.infos|raw }}</h5>
                                     <hr>
                                 </div>
                             </div>
@@ -94,7 +97,7 @@
                                                     {{ param.val }}
                                                 </div>
                                                 <div class="col-6">
-                                                    Description
+                                                    {{ param.desc }}
                                                 </div>
                                             </div>
                                         {% endfor %}

@@ -64,12 +64,13 @@ class AuthToken
         $this->expiration = $this->creation->modify("+1year");
         $userInfos = [
             "login" => $user->getEmail(),
-            "roles" => $user->getRoles()
+            "roles" => $user->getRoles(),
+            "partner" => $user->getPartner()->getName(),
         ];
         try {
             $t = $tokenBuilder->setContentType('JWT')
                 ->setHeaderClaim('for', strtoupper($user->getLastName()) . ' ' . ucfirst($user->getFirstName()))
-                ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
+                ->setSecret('kB=&ah6M@VtK^yQbf&P9xDrkvcQh_emm55y3Kq#jy=DxLy$MufnPG6vuW33Z?v$')
                 ->setIssuer('API Authenticator')
                 ->setJwtId(md5(uniqid('TOKEN')))
                 ->setPayloadClaim('user', $userInfos)

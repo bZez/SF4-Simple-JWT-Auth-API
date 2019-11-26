@@ -2,6 +2,9 @@
 
 namespace App\Controller\Routing;
 
+use App\Entity\AccessToken;
+use App\Entity\Activity;
+use App\Entity\AuthToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,15 +20,16 @@ class RouterController extends AbstractController
     /**
      * @param string $class
      * @param string $action
+     * @param string $source
      * @return Response
-     * @Route("/{class}s/{action}", name="api_forwarder")
+     * @Route("/{source}/{class}s/{action}", name="api_forwarder",methods={"GET|POST|PUT|DELETE"})
      */
-    public function forwardTo($class, $action)
+    public function forwardTo($source,$class, $action)
     {
         if (is_numeric($action))
-            return $this->forward('App\Controller\Data\\' . ucfirst($class) . 'Controller::show', ['id' => $action]);
+            return $this->forward('App\Controller\Data\\'.strtoupper($source).'\\' . ucfirst($class) . 'Controller::show', ['id' => $action]);
         else
-            return $this->forward('App\Controller\Data\\' . ucfirst($class) . 'Controller::' . $action);
+            return $this->forward('App\Controller\Data\\'.strtoupper($source).'\\' . ucfirst($class) . 'Controller::' . $action);
     }
 
 }

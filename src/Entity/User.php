@@ -51,7 +51,7 @@ class User implements UserInterface
     private $authToken;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Partner", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partner", inversedBy="users",)
      * @ORM\JoinColumn(nullable=false)
      */
     private $partner;
@@ -61,9 +61,15 @@ class User implements UserInterface
      */
     private $accessRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="user", orphanRemoval=true)
+     */
+    private $activities;
+
     public function __construct()
     {
         $this->accessRequests = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +235,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($accessRequest->getRequestedBy() === $this) {
                 $accessRequest->setRequestedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->contains($activity)) {
+            $this->activities->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getUser() === $this) {
+                $activity->setUser(null);
             }
         }
 

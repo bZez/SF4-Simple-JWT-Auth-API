@@ -2,7 +2,10 @@ html, body {
     margin: 0;
     padding: 0;
     height: calc(100% - 75px);
-
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -140,6 +143,12 @@ input[type="email"], input[type="text"], input[type="password"] {
 }
 .bg-DELETE-1 {
     background: #a32c38 !important;
+}
+.circle-method {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 30px;
 }
 #overlayer {
     z-index: 99999;

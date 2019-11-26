@@ -43,39 +43,6 @@ class ApiBackController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param UserRepository $repository
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return Response
-     * @Route("/users",name="api_back_user")
-     */
-    public function user(Request $request, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $user = new User();
-        $createForm = $this->createForm(UserCreationType::class, $user);
-        $createForm->handleRequest($request);
-        $users = $repository->findAll();
-        $em = $this->getDoctrine()->getManager();
-        if ($createForm->isSubmitted() && $createForm->isValid()) {
-            $user->setEmail($user->getEmail());
-            $user->setFirstName($user->getFirstName());
-            $user->setLastName($user->getLastName());
-            $user->setPartner($user->getPartner());
-            $user->setRoles($user->getRoles());
-            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
-            $em->persist($user);
-            $em->flush();
-
-            $this->addFlash('notice', 'User successfully created !');
-            return $this->redirectToRoute('api_back_user');
-        }
-        return $this->render('back/user.html.twig', [
-            'users' => $users,
-            'createForm' => $createForm->createView()
-        ]);
-    }
-
-    /**
      * @return Response
      * @Route("/datas",name="api_back_data")
      */
@@ -99,17 +66,5 @@ class ApiBackController extends AbstractController
         ]);
     }
 
-    /**
-     * @param PartnerRepository $repository
-     * @return Response
-     * @Route("/partners",name="api_back_partner")
-     */
-    public function partner(PartnerRepository $repository)
-    {
-        $partners = $repository->findAll();
-        return $this->render('back/partner.html.twig', [
-            'partners' => $partners,
-            'controllers' => $this->controllers
-        ]);
-    }
+
 }

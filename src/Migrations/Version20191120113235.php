@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191113110935 extends AbstractMigration
+final class Version20191120113235 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,8 @@ final class Version20191113110935 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE partner ADD admin_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE partner ADD CONSTRAINT FK_312B3E16642B8210 FOREIGN KEY (admin_id) REFERENCES user (id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_312B3E16642B8210 ON partner (admin_id)');
+        $this->addSql('ALTER TABLE activity ADD CONSTRAINT FK_AC74095A9393F8FE FOREIGN KEY (partner_id) REFERENCES partner (id)');
+        $this->addSql('CREATE INDEX IDX_AC74095A9393F8FE ON activity (partner_id)');
     }
 
     public function down(Schema $schema) : void
@@ -32,8 +31,7 @@ final class Version20191113110935 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE partner DROP FOREIGN KEY FK_312B3E16642B8210');
-        $this->addSql('DROP INDEX UNIQ_312B3E16642B8210 ON partner');
-        $this->addSql('ALTER TABLE partner DROP admin_id');
+        $this->addSql('ALTER TABLE activity DROP FOREIGN KEY FK_AC74095A9393F8FE');
+        $this->addSql('DROP INDEX IDX_AC74095A9393F8FE ON activity');
     }
 }

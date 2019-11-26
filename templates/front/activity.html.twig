@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% set y = ''|date('Y') %}
+{% set mList = ['GET','POST','PUT','DELETE'] %}
+
+{% block title %}Activity{% endblock %}
+{% block body %}
+
+    <div class="container-fluid" style="height: calc(100vh - 86px)">
+        <div class="row h-100">
+            {#            <div class="col-2 border-right"></div>#}
+            <div class="col-12">
+                <div class="row">
+
+                    {% for m in mList %}
+                        <div class="col-3">
+                            <div class="col-12 bg-white rounded shadow-sm p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-3">
+                                        <div class="bg-{{ m }} text-white circle-method font-weight-bold text-center">{{ m }}</div>
+                                    </div>
+                                    <div class="col-9">
+                                        <h3 class="text-dark">{% if activities[y][m]|length > 0 %}{{ activities[y][m] }}{% else %}0{% endif %}</h3>
+                                        <h6>Number of {{ m }} calls</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <div class="col-12 rounded bg-white shadow-sm p-4 overflow-hidden h-100">
+                            <h5 class="mb-4"><i class="fas fa-chart-pie"></i> Overall stats <i
+                                        class="fas fa-ellipsis-h float-right"></i></h5>
+                            <hr style="opacity: .5;width: 150%;margin-left: -25%">
+                            <div class="all-chart"></div>
+                            <h4 class="text-center text-dark mt-2">{{ totalCalls }}</h4>
+                            <h5 class="text-center">Total API calls</h5>
+                            <hr style="opacity: .5;width: 150%;margin-left: -25%">
+                            <div class="col-10 offset-1">
+                                <div class="row mt-5">
+                                    <h6 class="col-6"><span
+                                                class="bg-GET p-1 font-weight-bold rounded text-white">GET</span>
+                                        {% if activities[y]['GET']|length > 0 %}{{ activities[y]['GET'] }}{% else %}0{% endif %}
+                                        calls</h6>
+                                    <h6 class="col-6"><span
+                                                class="bg-POST p-1 font-weight-bold rounded text-white">POST</span>
+                                        {% if activities[y]['POST']|length > 0 %}{{ activities[y]['POST'] }}{% else %}0{% endif %}
+                                        calls</h6>
+                                </div>
+                                <div class="row mb-3 mt-3">
+                                    <h6 class="col-6"><span
+                                                class="bg-PUT p-1 font-weight-bold rounded text-white">PUT</span>
+                                        {% if activities[y]['PUT']|length > 0 %}{{ activities[y]['PUT'] }}{% else %}0{% endif %}
+                                        calls</h6>
+                                    <h6 class="col-6"><span class="bg-DELETE p-1 font-weight-bold rounded text-white">DELETE</span>
+                                        {% if activities[y]['DELETE']|length > 0 %}{{ activities[y]['DELETE'] }}{% else %}0{% endif %}
+                                        calls</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="col-12 rounded bg-white shadow-sm p-4 overflow-hidden h-100 align-items-center">
+                            <h5 class="mb-4"><i class="fas fa-chart-line"></i> Tasks activity <i
+                                        class="fas fa-ellipsis-h float-right"></i></h5>
+                            <hr style="opacity: .5;width: 150%;margin-left: -25%">
+                            <p>This is a simple chart based on your API activities <br>
+                                These results are for the year <b class="text-green">{{ y }}</b>, if you want more
+                                detailed stats, please contact us.
+
+                            </p>
+                            <div class="ct-chart h-100"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        months = [];
+        for (i = 1; i < 13; i++) {
+            months.push(i);
+        }
+        new Chartist.Line('.ct-chart', {
+            labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Nov', 'Dec'],
+            series: [
+                {% for z in mList %}
+                [ {% for i in 01..12 %}
+                    {% if i < 10 %}
+                    {% set i = '0'~i %}
+                    {% endif %}
+                    {{ activities[y]['months'][i][z] ? activities[y]['months'][i][z] : '0' }},
+                    {% endfor %}],
+                {% endfor %}
+            ]
+        }, {
+            fullWidth: true,
+            chartPadding: {
+                right: 40,
+                bottom: 0
+            }
+        });
+
+        new Chartist.Pie('.all-chart', {
+            labels: ['GET', 'POST', 'PUT', 'DELETE'],
+            series: [
+                {% if activities[y]['POST'] > 0 %}{{ (totalCalls/activities[y]['POST'])*100 }}{% else %}0{% endif %},
+                {% if activities[y]['GET'] > 0 %}{{ (totalCalls/activities[y]['GET'])*100 }}{% else %}0{% endif %},
+                {% if activities[y]['PUT'] > 0 %}{{ (totalCalls/activities[y]['PUT'])*100 }}{% else %}0{% endif %},
+                {% if activities[y]['DELETE'] > 0 %}{{ (totalCalls/activities[y]['DELETE'])*100 }}{% else %}0{% endif %}
+            ]
+        }, {
+            donut: true,
+            donutWidth: 60,
+            donutSolid: true,
+            startAngle: 0,
+            showLabel: false
+        });
+
+    </script>
+{% endblock %}

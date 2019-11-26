@@ -5,8 +5,8 @@
 {% block body %}
     {% set admin = users[0].partner.admin %}
     <div class="row bg-white" style="height: calc(100vh - 86px)">
-        <div class="col-2 border">Left</div>
-        <div class="col-10 border" id="size">
+{#        <div class="col-2 border">Left</div>#}
+        <div class="col-12" id="size">
             <div class="row align-items-center">
                 <div class="col-12 pl-5 p-4 section-header shadow-sm">
                     <div class="float-left">
@@ -24,8 +24,8 @@
                     <div class="col-2 p-0 border-right text-truncate"><input type="checkbox" id="checkAll"> NAME</div>
                     <div class="col-2 border-right text-truncate">COMPANY</div>
                     <div class="col-2 border-right text-truncate">MAIL</div>
-                    <div class="col-6 border-right text-truncate">AUTH TOKEN</div>
-                    {#<div class="col-3 border-right text-truncate">ACCESS TOKEN</div>#}
+                    <div class="col-5 border-right text-truncate">AUTH TOKEN</div>
+                    <div class="col-1 border-right text-truncate">ACTION</div>
                 </div>
 
                 <div class="container-fluid w-100 p-0 m-0" style="overflow-y: auto;overflow-x: hidden" id="resize">
@@ -36,15 +36,22 @@
                         {#{% set generateAccess = "<button onclick='generateAccess("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
             <i class='fas fa-user-lock'></i> &nbsp; Generate access token based on privileges
         </a>" %}#}
-                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row">
+                        <div class="row w-100 m-0 pl-5 pt-2 pb-2 pr-3 border-bottom align-items-center user-result-row" id="user-{{ user.id }}">
                             <div class="col-2 p-0 border-right text-green text-truncate">
                                 {% if user == admin %}<i class="fa fas fa-user-shield"></i>{% else %}<input
                                         type="checkbox">{% endif %} {{ user.lastName|upper }} {{ user.firstName|capitalize }}
                             </div>
                             <div class="col-2 border-right text-truncate">{{ user.partner.name|upper }}</div>
                             <div class="col-2 border-right text-truncate">{{ user.email }}</div>
-                            <div class="col-6 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
-                            {#                            <div class="col-3 border-right text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>#}
+                            <div class="col-5 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
+                            <div class="col-1 border-right text-truncate">
+                                <button class="btn btn-sm bg-GET border-GET text-white shadow-none">
+                                    <i class="fa fas fa-user-edit"></i>
+                                </button>
+                                <button onclick="removeThis('users','{{ user.id }}',$('#user-{{ user.id }}'))" class="btn btn-sm btn-danger shadow-none">
+                                    <i class="fa fas fa-user-times"></i>
+                                </button>
+                            </div>
                         </div>
                     {% endfor %}
                     {% include 'front/users/add.html.twig' %}

@@ -44,6 +44,11 @@ class AccessToken
     /**
      * @ORM\Column(type="string",length=255)
      */
+    private $source;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     */
     private $controller;
 
     /**
@@ -56,19 +61,21 @@ class AccessToken
      */
     private $ip;
 
-    public function __construct(AuthToken $auth,$controller)
+    public function __construct(AuthToken $auth,$source,$controller)
     {
         $tokenBuilder = new Build('JWT', new Validate(), new Encode());
         $this->creation = new DateTime();
+        $this->source = $source;
         $this->controller = $controller;
         $this->expiration = $this->creation->modify("+1year");
         try {
             $t = $tokenBuilder->setContentType('JWT')
                 ->setHeaderClaim('partner', $auth->getUser()->getPartner()->getId())
-                ->setSecret('53f1d8af82283491b2fe98310ccf9a75nE$!')
+                ->setSecret('kB=&ah6M@VtK^yQbf&P9xDrkvcQh_emm55y3Kq#jy=DxLy$MufnPG6vuW33Z?v$')
                 ->setIssuer('API Access Generator')
                 ->setJwtId(md5(uniqid('TOKEN')))
                 ->setPayloadClaim('controller', $controller)
+                ->setPayloadClaim('source', $source)
                 ->build();
         } catch (ValidateException $e) {
             die("Build error...");
@@ -195,6 +202,22 @@ class AccessToken
     public function setIp($ip): void
     {
         $this->ip = $ip;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param mixed $source
+     */
+    public function setSource($source): void
+    {
+        $this->source = $source;
     }
 
 }

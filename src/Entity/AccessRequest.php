@@ -25,6 +25,11 @@ class AccessRequest
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $source;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $controller;
 
     /**
@@ -43,10 +48,11 @@ class AccessRequest
      */
     private $requestedBy;
 
-    public function __construct(User $user,$controller)
+    public function __construct(User $user,$source,$controller)
     {
         $this->requestedAt = new \DateTime();
         $this->requestedBy = $user;
+        $this->source = $source;
         $this->controller = $controller;
         $this->partner = $user->getPartner();
     }
@@ -115,4 +121,21 @@ class AccessRequest
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param mixed $source
+     */
+    public function setSource($source): void
+    {
+        $this->source = $source;
+    }
+
 }

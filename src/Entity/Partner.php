@@ -43,10 +43,17 @@ class Partner
      */
     private $accessRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="partner", orphanRemoval=true)
+     */
+    private $activities;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->accessRequests = new ArrayCollection();
+        $this->privileges = ["GET"=> [], "PUT"=> [], "POST"=> [], "DELETE"=> []];
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,13 +109,13 @@ class Partner
         return $this->privileges;
     }
 
-    public function addPrivilege($controller, $methods, $actions)
+    public function addPrivilege($controller,$source, $methods, $actions)
     {
         $prArr = $this->getPrivileges();
         foreach ($methods as $method) {
-            $prArr[$method][$controller] = [];
+            $prArr[$source][$method][$controller] = [];
             foreach ($actions as $action) {
-                $prArr[$method][$controller][] .= $action;
+                $prArr[$source][$method][$controller][] .= $action;
             }
         }
         $this->setPrivileges($prArr);
@@ -189,6 +196,37 @@ class Partner
             // set the owning side to null (unless already changed)
             if ($accessRequest->getPartner() === $this) {
                 $accessRequest->setPartner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setPartner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->contains($activity)) {
+            $this->activities->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getPartner() === $this) {
+                $activity->setPartner(null);
             }
         }
 

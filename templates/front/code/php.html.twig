@@ -1,9 +1,11 @@
 <code class="language-php">&lt;?php
-    $API_AUTH_TOKEN = ""; //Your API AUTH TOKENzz
-    $API_ACCESS_TOKEN = ""; //Your API ACCESS Token
+    $API_AUTH_TOKEN = "{{ app.user.authToken.value }}"; //Your API AUTH TOKENzz
+    $API_ACCESS_TOKEN = "{% for accessToken in app.user.authToken.accessTokens %}{% if (accessToken.controller == controller.name) and (accessToken.source == controller.source) %}{{ accessToken.value }}{% endif %}{% endfor %}"; //Your API ACCESS Token
     {% if method.method is same as('PUT') %}
 // Create map with request parameters
-    $params = array ('name' => 'John', 'lastname' => 'Doe');
+    $params = array (
+        {% for param in method.params %}'{{ param.name[1:] }}' => 'XXX',
+        {% endfor %});
     // Build Http query using params
     $query = http_build_query ($params);
     {% endif %}

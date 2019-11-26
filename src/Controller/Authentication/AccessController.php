@@ -35,14 +35,26 @@ class AccessController extends AbstractController
     /**
      * @param User $user
      * @param $controller string
+     * @param $source string
      * @return String Token
-     * @Route("/_secure/generate/access/{controller}/{user}",name="api_back_generate_access")
+     * @Route("/_secure/generate/access/{source}/{controller}/{user}",name="api_back_generate_access")
      */
-    public function generateAccessToken(User $user,$controller)
+    public function generateAccessToken(User $user,$source,$controller)
     {
         $authToken = $user->getAuthToken();
         $users = $user->getPartner()->getUsers();
-        $accessToken = new AccessToken($authToken,$controller);
+        $accessTokens = $authToken->getAccessTokens();
+        if(count($accessTokens) > 0){
+            foreach ($accessTokens as $aT) {
+                if($aT->getController() !== $controller)
+                {
+                    $accessToken = new AccessToken($authToken,$source,$controller);
+                }
+            }
+        } else {
+            $accessToken = new AccessToken($authToken,$source,$controller);
+        }
+
         foreach ($users as $user) {
             if($authToken = $user->getAuthToken())
             {
@@ -59,12 +71,13 @@ class AccessController extends AbstractController
     /**
      * @param User $user
      * @param $controller
-     * @Route("/~private/request/access/{controller}/{user}",name="api_front_request_access")
+     * @param $source
+     * @Route("/~private/request/access/{source}/{controller}/{user}",name="api_front_request_access")
      * @return JsonResponse
      */
-    public function requestAccess(User $user,$controller)
+    public function requestAccess(User $user,$source,$controller)
     {
-        $accessReq = new AccessRequest($user,$controller);
+        $accessReq = new AccessRequest($user,$source,$controller);
         $this->em->persist($accessReq);
         $this->em->flush();
         return $this->json(["Access request registered !"]);

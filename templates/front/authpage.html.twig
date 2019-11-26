@@ -88,7 +88,7 @@
                                          role="tabpanel"
                                          aria-labelledby="php-tab">
                                         <pre class="bg-dark text-light w-100 p-2 rounded"><code class="language-php">&lt;?php
-    $API_AUTH_TOKEN = ""; //Your API AUTH TOKEN
+    $API_AUTH_TOKEN = "{{ app.user.authToken.value }}"; //Your API AUTH TOKEN
     $API_ACCESS_TOKEN = ""; //Your API ACCESS Token
     $opts = [
         'http' => [

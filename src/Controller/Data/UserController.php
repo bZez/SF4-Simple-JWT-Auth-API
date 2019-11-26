@@ -4,6 +4,8 @@ namespace App\Controller\Data;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
@@ -47,16 +49,25 @@ class UserController extends AbstractController
      */
     public function list()
     {
-        return $this->json([
-            'Users' => [
-                '0' => [
-                    'Name' => 'User 1'
-                ],
-                '1' => [
-                    'Name' => 'User 2'
+        $request = Request::createFromGlobals();
+        if(!$request->isMethod('GET'))
+        {
+            throw new MethodNotAllowedException(['GET'],'Unallowed method...');
+        } else {
+            $this->forward('App\Listener\TokenAuthentication::setAcctivity',[
+                
+            ]);
+            return $this->json([
+                'Users' => [
+                    '0' => [
+                        'Name' => 'User 1'
+                    ],
+                    '1' => [
+                        'Name' => 'User 2'
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        }
     }
 
     /**

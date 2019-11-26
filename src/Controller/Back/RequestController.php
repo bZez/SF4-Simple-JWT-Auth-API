@@ -5,15 +5,11 @@ namespace App\Controller\Back;
 
 
 use App\Entity\AccessRequest;
-use App\Entity\AccessToken;
 use App\Entity\AuthToken;
-use App\Helper\DataParser;
 use Doctrine\ORM\EntityManagerInterface;
-use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -53,7 +49,7 @@ class RequestController extends AbstractController
             $controller = $request->getController();
             foreach ($req->request->get('actions') as $m => $a)
             {
-                $partner->addPrivilege(strtolower($request->getController()).'s',[$m],$a);
+                $partner->addPrivilege(strtolower($controller).'s',$request->getSource(),[$m],$a);
             }
             /**
              * @var AuthToken $auth
@@ -61,6 +57,7 @@ class RequestController extends AbstractController
             $user = $partner->getAdmin();
             $this->forward('App\Controller\Authentication\AccessController::generateAccessToken',[
                 'user' => $user,
+                'source' => $request->getSource(),
                 'controller' => $controller
             ]);
             $request->setStatus(true);

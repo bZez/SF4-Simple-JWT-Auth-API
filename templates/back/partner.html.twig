@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="row bg-white" style="height: calc(100vh - 86px)">
-        <div class="col-2 border">Left</div>
-        <div class="col-10 border" id="size">
+{#        <div class="col-2 border">Left</div>#}
+        <div class="col-12 " id="size">
             <div class="row">
                 <div class="col-12 pl-5 p-4 section-header shadow-sm">
                     <h3 class="section-h3">Partners</h3>
@@ -24,6 +24,7 @@
 
                 <div class="container-fluid w-100 p-0 m-0" style="overflow-y: auto;overflow-x: hidden" id="resize">
                     {% for partner in partners %}
+                        {% if partner.name is not same as('MGEL') %}
                         {#                        {% set generateAuth = "<button onclick='generateAuth("~ user.id ~",$(this))' class='w-100 btn btn-sm btn-primary shadow-none mr-2 text-truncate'>
                                     <i class='fas fa-user-lock'></i> &nbsp; Generate authentication token for user
                                 </a>" %}
@@ -56,11 +57,13 @@
                                 {% endfor %}
                             </div>
                             <div class="col-3 border-right text-truncate">{% set ctlArr = [] %}
-                                {% for method in partner.privileges|keys %}
-                                    {% for controller in partner.privileges[method]|keys %}
+                                {% for p in partner.privileges|keys %}
+                                    {% for method in partner.privileges[p]|keys %}
+                                    {% for controller in partner.privileges[p][method]|keys %}
                                         {% if controller not in ctlArr %}
                                             {% set ctlArr =ctlArr|merge([controller]) %}
                                         {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 {% endfor %}
                                 {% for controller in ctlArr %}
@@ -68,15 +71,19 @@
                                 {% endfor %}
                             </div>
                             <div class="col-2 border-right text-truncate">
-                                <button class="btn btn btn-primary shadow-none"
+                                <button class="btn btn-sm btn-secondary shadow-none">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary shadow-none"
                                         data-toggle="modal" data-target="#rightModal-{{ partner.id }}">
-                                    <i class="fas fa-edit"></i> &nbsp; Edit rights
+                                    <i class="fas fa-shield-alt"></i>
                                 </button>
                             </div>
                             {#                            <div class="col-3 border-right text-truncate">{{ user.authToken ? user.authToken.value : generateAuth|raw }}</div>
                                                         <div class="col-3 text-truncate">{% if user.authToken %}{{ user.authToken.accessToken ? user.authToken.accessToken.value : generateAccess|raw }}{% else %}{{ generateAuth|raw }}{% endif %}</div>#}
                         </div>
                         {% include 'back/partner/right.html.twig' %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -89,7 +96,7 @@
         size = $(window).innerHeight();
         full = $('.section-header').innerHeight() + $('.section-table-header').innerHeight();
         nav = $('.navbar').innerHeight();
-        $('#resize').css('height', size - nav - full - 2 + 'px')
+        $('#resize').css('height', size - nav - full - 2 + 'px');
 
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);

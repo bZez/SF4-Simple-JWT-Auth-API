@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="accessModalLabel-{{ request.id }}">Grant {{ request.controller }} access
+                <h5 class="modal-title" id="accessModalLabel-{{ request.id }}">Grant <span class="text-green">{{ request.source|upper }} - {{ request.controller }}</span> access
                     to {{ request.partner.name|upper }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <form action="" name="accessForm-{{ request.id }}" id="accessForm-{{ request.id }}" method="post" enctype="multipart/form-data">
-                    {% for m,actions in parser.methods(request.controller) %}
+                    {% for m,actions in parser.methods(request.source,request.controller) %}
                         <div class="d-inline-block btn-sm btn-primary btn-{{ m }} p-1 rounded font-weight-bold">{{ m }}</div>
                         <br>
                         {% for a in actions %}

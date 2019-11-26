@@ -18,39 +18,44 @@ class DataParser
      * @throws ReflectionException
      * @author  Sam BZEZ <sam@bzez.dev>
      */
-    public function __construct($kernel=null)
+    public function __construct($kernel = null)
     {
-        if($kernel)
-        {
-            $dataDir = $kernel->getProjectDir() . '/src/Controller/Data/*';
-            $dir = new \DirectoryIterator(dirname($dataDir));
-            $this->controllers = [];
-            $i = 0;
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    $className = explode('.', $fileinfo->getFilename())[0];
-                    $c = new ReflectionClass('App\Controller\Data\\' . $className);
-                    $this->controllers[$i]['name'] = substr($className, 0, -10);
-                    $doc = str_replace('*', '', $c->getDocComment());
-                    $doc = str_replace('/', '', $doc);
-                    $doc = str_replace('\\', '', $doc);
-                    $this->controllers[$i]['doc'] = $doc;
-                    foreach ($c->getMethods() as $id => $m) {
-                        if ($m->class == $c->name) {
-                            $this->controllers[$i]['methods'][] = [
-                                'name' => $m->name,
-                                'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
-                                'method' => $this->parseMethodComments($c, $m)['method'],
-                                'response' => $this->parseMethodComments($c, $m)['response'],
-                                'params' => $this->parseMethodComments($c, $m)['params'],
-                                'infos' => $this->parseMethodComments($c, $m)['infos']
-                            ];
+        if ($kernel) {
+            $part = new \DirectoryIterator(dirname($kernel->getProjectDir() . '/src/Controller/Data/*'));
+            foreach ($part as $f) {
+                if ($f->isDir() && !$f->isDot()) {
+                    $dataDir = $kernel->getProjectDir() . '/src/Controller/Data/' . $f . '/*';
+                    $dir = new \DirectoryIterator(dirname($dataDir));
+                    $this->controllers = [];
+                    $i = 0;
+                    foreach ($dir as $fileinfo) {
+                        if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
+                            $className = explode('.', $fileinfo->getFilename())[0];
+                            $c = new ReflectionClass('App\Controller\Data\\' . $f . '\\' . $className);
+                            $this->controllers[$i]['name'] = substr($className, 0, -10);
+                            $this->controllers[$i]['source'] = "$f";
+                            $doc = str_replace('*', '', $c->getDocComment());
+                            $doc = str_replace('/', '', $doc);
+                            $doc = str_replace('\\', '', $doc);
+                            $this->controllers[$i]['doc'] = $doc;
+                            foreach ($c->getMethods() as $id => $m) {
+                                if (($m->class == $c->name) && !$this->startsWith($m->name, '__')) {
+                                    $this->controllers[$i]['methods'][] = [
+                                        'name' => $m->name,
+                                        'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
+                                        'method' => $this->parseMethodComments($c, $m)['method'],
+                                        'response' => $this->parseMethodComments($c, $m)['response'],
+                                        'params' => $this->parseMethodComments($c, $m)['params'],
+                                        'infos' => $this->parseMethodComments($c, $m)['infos']
+                                    ];
+                                }
+                            }
+                            $i++;
                         }
                     }
-                    $i++;
                 }
-
             }
+
         }
     }
 
@@ -75,7 +80,20 @@ class DataParser
             if (is_string($line)) {
                 if ($this->startsWith($line, ' @param')) {
                     $p = explode(' ', str_replace(' @param ', '', $line));
-                    $params[] = ["name" => $p[0], "val" => $p[1]];
+                    if((isset($p[1]))&&(isset($p[2])))
+                    {
+                        $params[] = [
+                            "name" => $p[0],
+                            "val" => $p[1],
+                            "desc" => $p[2]
+                        ];
+                    } else {
+                        $params[] = [
+                            "name" => $p[0],
+                            "val" => '',
+                            "desc" => ''
+                        ];
+                    }
                 }
                 if ($this->startsWith($line, ' @api')) {
                     $endpoint = str_replace(' @api ', '', $line);
@@ -112,15 +130,19 @@ class DataParser
         return $this->controllers;
     }
 
-    public function getMethods($controller)
+    public function getMethods($source, $controller)
     {
-        $c = new ReflectionClass('App\Controller\Data\\' . $controller.'Controller');
+        try {
+            $c = new ReflectionClass('App\Controller\Data\\' . $source . '\\' . $controller . 'Controller');
+        } catch (\Exception $e) {
+            return die;
+        }
         $methods['GET'] = [];
         $methods['POST'] = [];
         $methods['PUT'] = [];
         $methods['DELETE'] = [];
         foreach ($c->getMethods() as $id => $m) {
-            if ($m->class == $c->name) {
+            if (($m->class == $c->name) && !$this->startsWith($m->name, '__')) {
                 $methods[$this->parseMethodComments($c, $m)['method']][] .= $m->name;
             }
         }
